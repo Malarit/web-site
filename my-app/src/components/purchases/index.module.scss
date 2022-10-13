@@ -1,0 +1,171 @@
+$maxWTable: 1000px;
+$maxWPhone: 574px;
+
+.root {
+  display: flex;
+  margin: 40px 0;
+  position: relative;
+  & > div:nth-of-type(1) {
+    width: calc(100% - 300px);
+    height: max-content;
+    @media (max-width: $maxWTable) {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: auto;
+      row-gap: 30px;
+    }
+    @media (max-width: $maxWPhone) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+.aside {
+  width: 300px;
+  height: max-content;
+  background-color: #fff;
+  ul {
+    padding: 0;
+    margin: 0;
+    li {
+      list-style-type: none;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      flex-direction: column;
+      span {
+        &:nth-of-type(2) {
+          float: right;
+        }
+      }
+    }
+  }
+  & > div {
+    &:nth-of-type(1) {
+      padding-top: 20px;
+    }
+
+    padding: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    width: 100%;
+    box-shadow: 0px 0px 5px rgba(124, 124, 124, 0.639);
+    span {
+      margin-left: auto;
+    }
+  }
+  @media (max-width: $maxWTable) {
+    position: absolute;
+    right: -10px;
+    transform: translateX(300px);
+    transition: all 0.5s ease;
+  }
+  &.active {
+    transform: translateX(0px);
+    transition: all 0.5s ease;
+  }
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+.mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: #ff00d9;
+  top: 0;
+  left: -40px;
+  font-size: 25px;
+  cursor: pointer;
+}
+.button {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  border-radius: 5px;
+  color: #fff;
+  border: 1.5px solid#ff00d9;
+  background-color: #ff00d9;
+  cursor: pointer;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  &:hover {
+    background-color: #c300a5;
+  }
+}
+
+.cardRoot {
+  height: max-content;
+
+  @media (min-width: $maxWTable) {
+    max-width: 100%;
+    width: 100%;
+    display: flex;
+    max-height: 200px;
+    align-items: center;
+    img {
+      max-height: 100px;
+    }
+    div {
+      padding: 0 6px;
+    }
+    & > span {
+      top: 3px;
+      left: 3px;
+      font-size: 11px;
+    }
+  }
+  @media (max-width: $maxWTable) {
+    & > span {
+      font-size: 12px;
+    }
+  }
+}
+
+.cardFavorite {
+  top: calc(0% + 13px);
+
+  @media (min-width: $maxWTable) {
+    top: 3px;
+    left: 100px;
+    width: 20px;
+  }
+}
+.cardTitle {
+  @media (min-width: $maxWTable) {
+    display: flex;
+    max-width: 280px;
+    height: inherit;
+    min-height: inherit;
+  }
+}
+.cardButton {
+  @media (min-width: $maxWTable) {
+    margin-left: auto;
+    margin-right: 40px;
+  }
+}
+.cardPrice {
+  @media (min-width: $maxWTable) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 35px auto 0;
+    min-width: 110px;
+  }
+}

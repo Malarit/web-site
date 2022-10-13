@@ -1,0 +1,13 @@
+const getData = (arr: any) => {
+  if (Array.isArray(arr)) {
+    for (let item of arr) {
+      for (let key in item) {
+        getData(item[key]);
+      }
+      return item.name;
+    }
+  }
+};
+
+// getData(catalogList.map((item: any) => item.ref0));
+console.log();

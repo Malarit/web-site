@@ -1,0 +1,18 @@
+$maxWTable: 1000px;
+$maxWPhone: 574px;
+
+.alice-carousel__prev-btn,
+.alice-carousel__next-btn {
+  width: 0;
+  height: 0;
+  padding: 0;
+}
+
+.alice-carousel__dots {
+  &-item:not(.__custom) {
+    &:hover,
+    &.__active {
+      background-color: #ff00d9;
+    }
+  }
+}
