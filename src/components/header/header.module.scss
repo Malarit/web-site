@@ -1,0 +1,145 @@
+$maxWTable: 1000px;
+$maxWPhone: 574px;
+
+.root {
+  width: 100%;
+  height: 60px;
+  box-shadow: 0px 1px 1px #7c7c7c42;
+}
+.wrapper {
+  display: flex;
+  align-items: center;
+  height: inherit;
+  width: inherit;
+  @media (max-width: $maxWTable) {
+    position: relative;
+    justify-content: center;
+  }
+}
+.logo {
+  a {
+    text-decoration: none;
+    line-height: 1;
+    font-size: 25px;
+    font-family: Lobster;
+    background: linear-gradient(45deg, #0d61bc 50%, #ff00d9);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  @media (max-width: $maxWTable) {
+    position: absolute;
+  }
+}
+.button {
+  min-width: 130px;
+  padding: 10px 15px;
+  height: 44px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: #ff00d9;
+  margin-left: 20px;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  @media (max-width: $maxWTable) {
+    min-width: 30px;
+    justify-content: center;
+    height: 44px;
+    padding: 0;
+    background-color: #fff;
+    position: absolute;
+    left: 0rem;
+  }
+  div {
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background-color: rgb(255, 255, 255);
+    transition: all 0.5s ease;
+    &:nth-of-type(1) {
+      top: calc(32% - 1px);
+    }
+    &:nth-of-type(3) {
+      bottom: calc(32% - 1px);
+    }
+    @media (max-width: $maxWTable) {
+      background-color: #000;
+    }
+  }
+  &.active {
+    background-color: #c300a5;
+    div {
+      transition: all 0.5s ease;
+      &:nth-of-type(1) {
+        top: calc(50% - 1px);
+        transform: rotate(45deg);
+      }
+      &:nth-of-type(2) {
+        transform: translateX(-50px);
+      }
+      &:nth-of-type(3) {
+        bottom: calc(50% - 1px);
+        transform: rotate(-45deg);
+      }
+    }
+    @media (max-width: $maxWTable) {
+      background-color: rgb(255, 255, 255);
+    }
+  }
+  span {
+    margin-left: 30px;
+    color: #fff;
+  }
+}
+.search {
+  max-width: 100%;
+  width: 100%;
+  padding: 0 40px;
+  height: 40px;
+  @media (max-width: $maxWTable) {
+    position: absolute;
+    padding: 0 20px;
+    top: 60px;
+    z-index: 2;
+    display: none;
+  }
+}
+.icons {
+  display: flex;
+  margin-left: auto;
+  div {
+    position: relative;
+    width: auto;
+    height: inherit;
+    cursor: pointer;
+    span {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 14px;
+      top: -5px;
+      left: calc(100% - 20px);
+      color: #fff;
+      background-color: #de00bd;
+    }
+  }
+
+  img {
+    margin: 0 10px;
+    @media (max-width: $maxWPhone) {
+      width: 20px;
+    }
+  }
+}
