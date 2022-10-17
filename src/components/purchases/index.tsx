@@ -1,62 +1,26 @@
 import React from "react";
-import Sticky from "react-stickynode";
-import cn from "classnames";
+
+import Aside from "./aside";
 
 import { useWindowDimensions } from "../../utils/getWindowSize";
+import { useWindowScrolls } from "../../utils/getWindowScroll";
+
 import Card from "../product/card";
 
 import { useSelector } from "react-redux";
-import { RootState } from "../../app/store";
-import { card } from "../../features/basket/types";
+import { RootState } from "../../store/store";
 
 import style from "./index.module.scss";
 
-const Aside: React.FC<{
-  items: card[];
-  width: number;
-  totalPrice: number;
-  active: boolean;
-  setActive: any;
-}> = ({ items, width, totalPrice, active, setActive }) => {
-  return (
-    <Sticky enabled={true} innerZ={10}>
-      <aside className={cn({ [style.aside]: true, [style.active]: active })}>
-        <div className={style.wrapper}>
-          {width < 1000 && (
-            <div onClick={() => setActive(!active)} className={style.mark}>
-              {"<"}
-            </div>
-          )}
-          <div>
-            <ul>
-              {items.map((obj) => (
-                <li key={obj.id}>
-                  {obj.title}
-                  <div>
-                    <span>x{obj.count}</span>
-                    <span>{obj.price * (obj.count || 1)} ₽</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            Итого: <span>{totalPrice},00 ₽</span>
-          </div>
-          <div className={style.button}>Заказать</div>
-        </div>
-      </aside>
-    </Sticky>
-  );
-};
-
 const Purchases: React.FC = () => {
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
+  const scroll = useWindowScrolls();
   const [active, setActive] = React.useState<boolean>(false);
   const { items, totalPrice } = useSelector(
     (state: RootState) => state.basketReducer
   );
 
+  console.log(scroll.scrollY, height);
   return (
     <>
       {width < 1000 && (
@@ -91,4 +55,3 @@ const Purchases: React.FC = () => {
 };
 
 export default Purchases;
-

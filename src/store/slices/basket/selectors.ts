@@ -1,4 +1,4 @@
-import { RootState } from "../../app/store";
+import { RootState } from "../../store";
 
 export const selectCountCard = (id: number) => (state: RootState) =>
   state.basketReducer.items.find((obj) => obj.id === id)?.count;

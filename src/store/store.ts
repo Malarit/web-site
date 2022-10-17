@@ -11,7 +11,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import basketReducer from "../features/basket/slice";
+import basketReducer from "./slices/basket/slice";
 
 const rootReducer = combineReducers({
   basketReducer,
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ['basketReducer'],
+  whitelist: ["basketReducer"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

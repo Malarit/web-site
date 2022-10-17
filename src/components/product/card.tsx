@@ -4,9 +4,9 @@ import { useWindowDimensions } from "../../utils/getWindowSize";
 import { getPercentage } from "../../utils/getPercentage";
 
 import { useSelector, useDispatch } from "react-redux";
-import { selectCountCard } from "../../features/basket/selectors";
-import { addItem, removeItem } from "../../features/basket/slice";
-import { card } from "../../features/basket/types";
+import { selectCountCard } from "../../store/slices/basket/selectors";
+import { addItem, removeItem } from "../../store/slices/basket/slice";
+import { card } from "../../store/slices/basket/types";
 
 import { Rating } from "react-simple-star-rating";
 

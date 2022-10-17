@@ -2,8 +2,8 @@ import React from "react";
 import { useWindowDimensions } from "../../utils/getWindowSize";
 import { Link } from "react-router-dom";
 
-import { selectAllCard } from "../../features/basket/selectors";
-import { useSelector} from "react-redux";
+import { selectAllCard } from "../../store/slices/basket/selectors";
+import { useSelector } from "react-redux";
 
 import Search from "../search";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import AliceCarousel from "react-alice-carousel";
 import { useWindowDimensions } from "../../utils/getWindowSize";
-import { card } from "../../features/basket/types";
+import { card } from "../../store/slices/basket/types";
 
 import Card from "./card";
 import Button from "../carousel/button";
@@ -77,7 +77,7 @@ const Offers: React.FC<offers> = ({ title, imgUrl, card }) => {
             })
           }
           items={card.map((item) => (
-              <Card key={item.id} card={{ ...item }} />
+            <Card key={item.id} card={{ ...item }} />
           ))}
         />
         <Button
