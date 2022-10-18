@@ -20,7 +20,7 @@ const Header: React.FC = () => {
   const [activeMenu, setActiveMenu] = React.useState<boolean>(false);
   const [activeSearch, setActiveSearch] = React.useState<boolean>(false);
 
-  const totalCount = useSelector(selectAllCard);
+  const CountCard = useSelector(selectAllCard);
 
   const { width } = useWindowDimensions();
   return (
@@ -52,7 +52,7 @@ const Header: React.FC = () => {
           <div>
             <Link to="/basket">
               <img src={basket} alt="" />
-              <span>{totalCount}</span>
+              <span>{CountCard}</span>
             </Link>
           </div>
           {width > 1000 ? (

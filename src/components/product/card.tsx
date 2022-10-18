@@ -1,12 +1,13 @@
 import React from "react";
 import cn from "classnames";
+import { Link } from "react-router-dom";
 import { useWindowDimensions } from "../../utils/getWindowSize";
 import { getPercentage } from "../../utils/getPercentage";
 
 import { useSelector, useDispatch } from "react-redux";
 import { selectCountCard } from "../../store/slices/basket/selectors";
 import { addItem, removeItem } from "../../store/slices/basket/slice";
-import { card } from "../../store/slices/basket/types";
+import { card } from "../../store/slices/product/types";
 
 import { Rating } from "react-simple-star-rating";
 
@@ -33,6 +34,11 @@ const Card: React.FC<{ card: card; classes?: classes }> = ({
   const { width } = useWindowDimensions();
   const dispatch = useDispatch();
   const count = useSelector(selectCountCard(card.id));
+  const linkTitle = card.title.replace(/[\ \%\* ]/g, (item) => {
+    if (item == " ") return "-";
+    else if (item == "%") return "";
+    else return item;
+  });
 
   return (
     <div
@@ -52,9 +58,9 @@ const Card: React.FC<{ card: card; classes?: classes }> = ({
       )}
 
       <div>
-        <a href="">
+        <Link to={`/catalog/details/${card.id}/${linkTitle}`}>
           <img src={card.imgUrl} alt="" />
-        </a>
+        </Link>
       </div>
 
       <div className={cn(style.rating, classes?.cardRating)}>

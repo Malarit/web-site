@@ -1,14 +1,15 @@
 import React from "react";
 import AliceCarousel from "react-alice-carousel";
 import { useWindowDimensions } from "../../utils/getWindowSize";
-import { card } from "../../store/slices/basket/types";
+import { useSelector, useDispatch } from "react-redux";
+import { selectCards } from "../../store/slices/basket/selectors";
+
+import { card } from "../../store/slices/product/types";
 
 import Card from "./card";
 import Button from "../carousel/button";
 
 import style from "./offers.module.scss";
-
-// fix the buttons
 
 const responsive = {
   0: {
@@ -33,16 +34,14 @@ const Offers: React.FC<offers> = ({ title, imgUrl, card }) => {
   const slideNum: number = 3;
   const CarouselRef = React.useRef<AliceCarousel | null>();
 
+  const cardsState = useSelector(selectCards);
+
   let indexItem = React.useRef<{
     item: number;
     itemsInSlide: number;
-    isNextSlideDisabled: boolean;
-    isPrevSlideDisabled: boolean;
   }>({
     item: 0,
     itemsInSlide: 0,
-    isNextSlideDisabled: false,
-    isPrevSlideDisabled: false,
   });
 
   return (
@@ -72,8 +71,6 @@ const Offers: React.FC<offers> = ({ title, imgUrl, card }) => {
             (indexItem.current = {
               item: e.item,
               itemsInSlide: e.itemsInSlide,
-              isNextSlideDisabled: e.isNextSlideDisabled,
-              isPrevSlideDisabled: e.isPrevSlideDisabled,
             })
           }
           items={card.map((item) => (

@@ -1,4 +1,4 @@
-import { card } from "../store/slices/basket/types";
+import { card } from "../store/slices/product/types";
 import { getPercentage } from "./getPercentage";
 
 export const calcTotalPrice = (obj: card[]): number => {

@@ -1,17 +1,21 @@
 import React from "react";
 
-import Header from "../components/header";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProducts } from "../store/slices/product/slice";
+import {
+  selectByDiscount,
+  selectByNotDiscount,
+} from "../store/slices/product/selectors";
+
 import Slider from "../components/banner/slider";
 import Category from "../components/category";
 import Offers from "../components/product/offers";
 import Banner from "../components/banner";
 import Subscribe from "../components/subscribe";
-import Footer from "../components/footer";
 
 import appStyle from "../app.module.scss";
 
 import OffersImg from "../assets/offers/offers.webp";
-import cardImg from "../assets/product/q.webp";
 import bannerTable from "../assets/banner/b3.webp";
 import bannerPhone from "../assets/banner/b3-2.webp";
 import categoryImg1 from "../assets/category/milk.webp";
@@ -32,170 +36,6 @@ const sliderList = [
   sliderImg,
 ];
 
-const cardListSale = [
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 3, count: 20 },
-    discount: 30,
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 3, count: 20 },
-    discount: 30,
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 3, count: 20 },
-    discount: 30,
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 3, count: 20 },
-    discount: 30,
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 3, count: 20 },
-    discount: 30,
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 3, count: 20 },
-    discount: 30,
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 3, count: 20 },
-    discount: 30,
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 3, count: 20 },
-    discount: 30,
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 3, count: 20 },
-    discount: 30,
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 3, count: 20 },
-    discount: 30,
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 3, count: 20 },
-    discount: 30,
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 3, count: 20 },
-    discount: 30,
-  },
-];
-
-const cardList = [
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 5, count: 20 },
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 5, count: 20 },
-    discount: 30,
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 5, count: 20 },
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 5, count: 20 },
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 5, count: 20 },
-    discount: 30,
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 5, count: 20 },
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 5, count: 20 },
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 5, count: 20 },
-    discount: 30,
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 5, count: 20 },
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 5, count: 20 },
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 5, count: 20 },
-  },
-  {
-    title: "Творог Простоквашино 2% 200 г ",
-    price: 600,
-    imgUrl: cardImg,
-    rating: { value: 5, count: 20 },
-  },
-];
 
 const categoryList = [
   { imgUrl: categoryImg1, title: "Молоко, сыр, яйцо" },
@@ -211,29 +51,34 @@ const categoryList = [
 ];
 
 const Home: React.FC = () => {
-  return (
-    <>
-      <Header />
-      <div className={appStyle.container}>
-        <Slider imgUrl={sliderList} />
-        <Category title={"Топ категорий"} card={categoryList} />
-        <Offers
-          title="Наши спецпредложения"
-          imgUrl={OffersImg}
-          card={cardListSale.map((obj, id) => ({ id, ...obj }))}
-        />
-        <Banner imgUrlTable={bannerTable} imgUrlPhone={bannerPhone} />
-        <Offers
-          title="Часто покупают"
-          imgUrl={OffersImg}
-          card={cardList.map((obj, id) => ({ id: id + 100, ...obj }))}
-        />
-        <Banner imgUrlTable={bannerTable} imgUrlPhone={bannerPhone} />
-        <Subscribe />
-      </div>
+  const dispatch = useDispatch();
+  let flag = React.useRef(true);
+  React.useEffect(() => {
+    if (flag.current) dispatch<any>(fetchProducts());
+    flag.current = false;
+  }, []);
 
-      <Footer />
-    </>
+  const productSale = useSelector(selectByDiscount);
+  const product = useSelector(selectByNotDiscount);
+
+  return (
+    <div className={appStyle.container}>
+      <Slider imgUrl={sliderList} />
+      <Category title={"Топ категорий"} card={categoryList} />
+      <Offers
+        title="Наши спецпредложения"
+        imgUrl={OffersImg}
+        card={productSale.map((obj) => ({ ...obj }))}
+      />
+      <Banner imgUrlTable={bannerTable} imgUrlPhone={bannerPhone} />
+      <Offers
+        title="Часто покупают"
+        imgUrl={OffersImg}
+        card={product.map((obj) => ({ ...obj }))}
+      />
+      <Banner imgUrlTable={bannerTable} imgUrlPhone={bannerPhone} />
+      <Subscribe />
+    </div>
   );
 };
 

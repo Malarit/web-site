@@ -2,7 +2,7 @@ import React from "react";
 import Sticky from "react-stickynode";
 import cn from "classnames";
 
-import { card } from "../../store/slices/basket/types";
+import { card } from "../../store/slices/product/types";
 
 import style from "./aside.module.scss";
 

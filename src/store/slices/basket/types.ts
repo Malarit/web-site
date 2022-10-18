@@ -1,14 +1,6 @@
-export interface card {
-  id: number;
-  title: string;
-  price: number;
-  imgUrl: string;
-  rating: { value: number; count: number };
-  discount?: number;
-  count?: number;
-}
+import { card } from "../product/types";
 
 export interface basketState {
-  totalPrice: number;
-  items: card[];
+    totalPrice: number;
+    items: card[];
 }

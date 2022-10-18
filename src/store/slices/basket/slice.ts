@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { basketState, card } from "./types";
+import { basketState } from "./types";
+import { card } from "../product/types";
 import { calcTotalPrice } from "../../../utils/calcTotalPrice";
 
 const initialState: basketState = {
