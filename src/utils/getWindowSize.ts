@@ -3,7 +3,7 @@ import React from "react";
 type returnSize = { width: number; height: number };
 
 function getWindowDimensions(): returnSize{
-  const { innerWidth: width, innerHeight: height } = window;
+  const { innerWidth: width, innerHeight: height} = window;
   return {
     width,
     height,

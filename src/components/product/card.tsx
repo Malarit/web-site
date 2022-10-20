@@ -35,8 +35,8 @@ const Card: React.FC<{ card: card; classes?: classes }> = ({
   const dispatch = useDispatch();
   const count = useSelector(selectCountCard(card.id));
   const linkTitle = card.title.replace(/[\ \%\* ]/g, (item) => {
-    if (item == " ") return "-";
-    else if (item == "%") return "";
+    if (item === " ") return "-";
+    else if (item === "%") return "";
     else return item;
   });
 
@@ -51,7 +51,7 @@ const Card: React.FC<{ card: card; classes?: classes }> = ({
         alt=""
       />
 
-      {card.discount && card.discount != 0 ? (
+      {card.discount && card.discount !== 0 ? (
         <span>-{card.discount}%</span>
       ) : (
         <></>

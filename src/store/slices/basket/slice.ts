@@ -32,13 +32,9 @@ export const basketSlice = createSlice({
         (obj) => obj.id === action.payload.id
       );
 
-      if (findProduct) {
-        findProduct.count === 1
-          ? (state.items = state.items.filter(
-              (obj) => obj.id !== findProduct.id
-            ))
-          : findProduct.count!--;
-      }
+      findProduct && findProduct.count === 1
+        ? (state.items = state.items.filter((obj) => obj.id !== findProduct.id))
+        : findProduct!.count!--;
 
       state.totalPrice = calcTotalPrice(state.items);
     },

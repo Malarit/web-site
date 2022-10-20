@@ -7,4 +7,4 @@ export const selectByNotDiscount = (state: RootState) =>
   state.productsReducer.items.filter((obj) => !obj.discount);
 
 export const selectById = (id: number) => (state: RootState) =>
-  state.productsReducer.items.find((obj) => obj.id == id);
+  state.productsReducer.items.find((obj) => obj.id === id);

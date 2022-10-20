@@ -1,16 +1,16 @@
 import React from "react";
 
-type returnSize = { scrollX: number; scrollY: number };
+type returnScroll = { scrollX: number; scrollY: number };
 
 function getWindowScrolls(): any {
-  const { scrollX, scrollY} = window;
+  const { scrollX, scrollY } = window;
   return {
     scrollX,
     scrollY,
   };
 }
 
-export function useWindowScrolls(): returnSize {
+export function useWindowScrolls(): returnScroll {
   const [windowScrolls, setWindowScrolls] = React.useState(getWindowScrolls());
 
   React.useEffect(() => {

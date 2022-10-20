@@ -57,6 +57,7 @@ $maxWPhone: 600px;
     position: absolute;
     font-size: 20px;
     bottom: 5%;
+    width: max-content;
     @media (max-width: $maxWTable) {
       position:static;
       max-width: 40%;

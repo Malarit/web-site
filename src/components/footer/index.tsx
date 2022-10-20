@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 import cn from "classnames";
 
 import style from "./index.module.scss";
@@ -11,23 +11,23 @@ const Footer: React.FC = () => {
       <div className={cn(style.wrapper, appStyle.container)}>
         <div>
           <h3>
-            <a href="">О компании</a>
+            <Link to="/">О компании</Link>
           </h3>
           <ul>
             <li>
-              <a href="">Вакансии в компании</a>
+              <Link to="/">Вакансии в компании</Link>
             </li>
             <li>
-              <a href="">Контакты</a>
+              <Link to="/">Контакты</Link>
             </li>
             <li>
-              <a href="">Новости</a>
+              <Link to="/">Новости</Link>
             </li>
             <li>
-              <a href="">Пользовательское соглашение</a>
+              <Link to="/">Пользовательское соглашение</Link>
             </li>
             <li>
-              <a href="">Политика обработки персональных данных</a>
+              <Link to="/">Политика обработки персональных данных</Link>
             </li>
           </ul>
         </div>
@@ -35,19 +35,19 @@ const Footer: React.FC = () => {
           <h3>Покупателю</h3>
           <ul>
             <li>
-              <a href="">Помощь покупателю</a>
+              <Link to="/">Помощь покупателю</Link>
             </li>
             <li>
-              <a href="">Доставка</a>
+              <Link to="/">Доставка</Link>
             </li>
             <li>
-              <a href="">Оплата</a>
+              <Link to="/">Оплата</Link>
             </li>
             <li>
-              <a href="">Возврат</a>
+              <Link to="/">Возврат</Link>
             </li>
             <li>
-              <a href="">Акции</a>
+              <Link to="/">Акции</Link>
             </li>
           </ul>
         </div>
@@ -55,21 +55,21 @@ const Footer: React.FC = () => {
           <div>Заказывайте товары круглосуточно и задавайте вопросы.</div>
           <div>+7 495 555 55 55</div>
           <div>
-            <a href="">
+            <Link to="/">
               <img src="" alt="" />
-            </a>
-            <a href="">
+            </Link>
+            <Link to="/">
               <img src="" alt="" />
-            </a>
-            <a href="">
+            </Link>
+            <Link to="/">
               <img src="" alt="" />
-            </a>
-            <a href="">
+            </Link>
+            <Link to="/">
               <img src="" alt="" />
-            </a>
-            <a href="">
+            </Link>
+            <Link to="/">
               <img src="" alt="" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

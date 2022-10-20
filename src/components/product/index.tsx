@@ -3,7 +3,6 @@ import ImageGallery from "react-image-gallery";
 import { useWindowDimensions } from "../../utils/getWindowSize";
 
 import { Rating } from "react-simple-star-rating";
-import { card } from "../../store/slices/product/types";
 
 import style from "./index.module.scss";
 import "react-image-gallery/styles/scss/image-gallery.scss";

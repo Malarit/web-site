@@ -5,6 +5,8 @@ import Aside from "./aside";
 import { useWindowDimensions } from "../../utils/getWindowSize";
 import { useWindowScrolls } from "../../utils/getWindowScroll";
 
+// import { BottomScrollListener } from "react-bottom-scroll-listener";
+
 import Card from "../product/card";
 
 import { useSelector } from "react-redux";
@@ -14,13 +16,15 @@ import style from "./index.module.scss";
 
 const Purchases: React.FC = () => {
   const { width, height } = useWindowDimensions();
-  const scroll = useWindowScrolls();
+  const { scrollY } = useWindowScrolls();
   const [active, setActive] = React.useState<boolean>(false);
+  const refDiv = React.useRef<any>();
   const { items, totalPrice } = useSelector(
     (state: RootState) => state.basketReducer
   );
 
-  console.log(scroll.scrollY, height);
+  console.log(refDiv.current?.clientHeight, scrollY);
+  
   return (
     <>
       {width < 1000 && (
@@ -32,8 +36,8 @@ const Purchases: React.FC = () => {
           setActive={setActive}
         />
       )}
-      <div className={style.root}>
-        <div>
+      <div className={style.root} >
+        <div ref={refDiv}>
           {items.map((obj) => (
             <div key={obj.id}>
               <Card key={obj.id} card={{ ...obj }} classes={style} />
