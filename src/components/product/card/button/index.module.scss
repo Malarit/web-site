@@ -1,0 +1,50 @@
+$maxWTable: 1000px;
+$maxWPhone: 574px;
+
+.button {
+  height: 30px;
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  border-radius: 5px;
+  color: #fff;
+  border: 1.5px solid#ff00d9;
+  background-color: #ff00d9;
+  cursor: pointer;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  &.active {
+    background-color: #fff;
+    cursor: default;
+    div {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      span {
+        font-size: 18px;
+        color: #ff00d9;
+        width: 25px;
+        text-align: center;
+        &:nth-of-type(1),
+        &:nth-of-type(3) {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  &:hover:not(.active) {
+    background-color: #c300a5;
+  }
+  @media (max-width: $maxWPhone) {
+    width: 70px;
+    font-size: 10px;
+  }
+}

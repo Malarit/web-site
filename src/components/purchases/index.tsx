@@ -24,7 +24,7 @@ const Purchases: React.FC = () => {
   );
 
   console.log(refDiv.current?.clientHeight, scrollY);
-  
+
   return (
     <>
       {width < 1000 && (
@@ -36,7 +36,7 @@ const Purchases: React.FC = () => {
           setActive={setActive}
         />
       )}
-      <div className={style.root} >
+      <div className={style.root}>
         <div ref={refDiv}>
           {items.map((obj) => (
             <div key={obj.id}>

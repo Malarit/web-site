@@ -1,0 +1,67 @@
+$maxWTable: 1000px;
+$maxWPhone: 574px;
+
+.root {
+  max-width: 185px;
+  margin: 0;
+  position: relative;
+  padding: 15px;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  a {
+    display: block;
+    img {
+      max-width: 100%;
+    }
+  }
+  & > span {
+    position: absolute;
+    top: calc(0% + 12px);
+    padding: 3px;
+    font-size: 14px;
+    border-radius: 5px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 600;
+    color: #fff;
+    background-color: rgb(255, 0, 13);
+    @media (max-width: $maxWPhone) {
+      font-size: 9px;
+    }
+  }
+  &:hover {
+    box-shadow: 0px 0px 3px #7c7c7ca3;
+  }
+}
+.favorite {
+  position: absolute;
+  right: calc(0% + 15px);
+  top: calc(0% + 15px);
+  width: 25px;
+  height: inherit;
+  cursor: pointer;
+  @media (max-width: $maxWPhone) {
+    width: 17px;
+  }
+}
+.rating {
+  font-size: 12px;
+}
+.title {
+  max-width: inherit;
+  display: inline-block;
+  max-height: 80px;
+  min-height: 80px;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: clip;
+  @media (max-width: $maxWPhone) {
+    font-size: 11px;
+  }
+}
+
+
