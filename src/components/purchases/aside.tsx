@@ -4,6 +4,8 @@ import cn from "classnames";
 
 import { card } from "../../store/slices/product/types";
 
+import Button from "./button";
+
 import style from "./aside.module.scss";
 
 type aside = {
@@ -12,6 +14,7 @@ type aside = {
   totalPrice: number;
   active: boolean;
   setActive: any;
+  enabled: boolean;
 };
 
 const Aside: React.FC<aside> = ({
@@ -20,9 +23,10 @@ const Aside: React.FC<aside> = ({
   totalPrice,
   active,
   setActive,
+  enabled,
 }) => {
   return (
-    <Sticky enabled={true} innerZ={10}>
+    <Sticky enabled={enabled} innerZ={10}>
       <aside className={cn({ [style.aside]: true, [style.active]: active })}>
         <div className={style.wrapper}>
           {width < 1000 && (
@@ -47,7 +51,7 @@ const Aside: React.FC<aside> = ({
           <div>
             Итого: <span>{totalPrice},00 ₽</span>
           </div>
-          <div className={style.button}>Заказать</div>
+          <Button/>
         </div>
       </aside>
     </Sticky>
