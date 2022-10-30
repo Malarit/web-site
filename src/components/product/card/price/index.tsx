@@ -2,11 +2,11 @@ import React from 'react'
 import { getPercentage } from "../../../../utils/getPercentage";
 import cn from "classnames";
 
-import { price } from '../types';
+import { cardComponents } from '../types';
 
 import style from "./index.module.scss" 
 
-const Price: React.FC<price> = ({ card, classes }) => {
+const Price: React.FC<cardComponents> = ({ card, classes }) => {
   return (
     <>
       <div

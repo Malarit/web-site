@@ -4,11 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectCountCard } from "../../../../store/slices/basket/selectors";
 import { addItem, removeItem } from "../../../../store/slices/basket/slice";
 
-import { button } from "../types";
+import { cardComponents } from "../types";
 
 import style from "./index.module.scss";
 
-export const Button: React.FC<button> = ({ card, classes }) => {
+export const Button: React.FC<cardComponents> = ({ card, classes }) => {
   const dispatch = useDispatch();
   const count = useSelector(selectCountCard(card.id));
 

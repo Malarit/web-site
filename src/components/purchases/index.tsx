@@ -18,18 +18,17 @@ const Purchases: React.FC = () => {
 
   const { width, height } = useWindowDimensions();
   const { scrollY } = useWindowScrolls();
-  const refDiv = React.useRef<any>();
+  const refRoot = React.useRef<any>();
   const scrollBottomRoot =
-    refDiv.current?.clientHeight + refDiv.current?.offsetTop;
+    refRoot.current?.clientHeight + refRoot.current?.offsetTop;
   const hightWindow = scrollY + height;
 
   const { items, totalPrice } = useSelector(
     (state: RootState) => state.basketReducer
   );
 
-  const OnScrollBottom = () => {
-    const onBottom: boolean = scrollBottomRoot < hightWindow - 200;
-    return onBottom;
+  const OnScrollBottom = (): boolean => {
+    return hightWindow - 600 > scrollBottomRoot;
   };
 
   const asideProps = {
@@ -38,13 +37,13 @@ const Purchases: React.FC = () => {
     totalPrice: totalPrice,
     active: active,
     setActive: setActive,
-    enabled: !OnScrollBottom(),
+    enabled: width < 1000 ? true : !OnScrollBottom(),
   };
 
   return items ? (
     <>
-      {width < 1000 && !OnScrollBottom() && <Aside {...asideProps} />}
-      <div className={style.root} ref={refDiv}>
+      {width < 1000 && <Aside {...asideProps} />}
+      <div className={style.root} ref={refRoot}>
         <div className={style.wrapper}>
           {items.map((obj) => (
             <div key={obj.id}>

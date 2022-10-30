@@ -8,11 +8,8 @@ export type classes = {
   cardPrice?: string;
   cardButton?: string;
 };
-export type button = {
-  card: card,
-  classes?: classes;
-};
-export type price = {
+
+export type cardComponents = {
   card: card;
   classes?: classes;
-};
+}
