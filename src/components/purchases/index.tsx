@@ -15,17 +15,17 @@ import style from "./index.module.scss";
 
 const Purchases: React.FC = () => {
   const [active, setActive] = React.useState<boolean>(false);
-
-  const { width, height } = useWindowDimensions();
-  const { scrollY } = useWindowScrolls();
-  const refRoot = React.useRef<any>();
-  const scrollBottomRoot =
-    refRoot.current?.clientHeight + refRoot.current?.offsetTop;
-  const hightWindow = scrollY + height;
-
   const { items, totalPrice } = useSelector(
     (state: RootState) => state.basketReducer
   );
+
+  const { width, height } = useWindowDimensions();
+  const { scrollY } = useWindowScrolls();
+  const hightWindow = scrollY + height;
+
+  const refRoot = React.useRef<any>();
+  const scrollBottomRoot =
+    refRoot.current?.clientHeight + refRoot.current?.offsetTop;
 
   const OnScrollBottom = (): boolean => {
     return hightWindow - 600 > scrollBottomRoot;
@@ -37,10 +37,10 @@ const Purchases: React.FC = () => {
     totalPrice: totalPrice,
     active: active,
     setActive: setActive,
-    enabled: width < 1000 ? true : !OnScrollBottom(),
+    enabled: OnScrollBottom(),
   };
 
-  return items ? (
+  return items.length != 0 ? (
     <>
       {width < 1000 && <Aside {...asideProps} />}
       <div className={style.root} ref={refRoot}>
@@ -64,16 +64,13 @@ const Purchases: React.FC = () => {
             <Button />
           </div>
         </div>
-        <div>
-          <iframe
-            src="https://yandex.ru/map-widget/v1/-/CCUZb2eMlA"
-            allowFullScreen={true}
-          ></iframe>
-        </div>
+
       </div>
     </>
   ) : (
-    <></>
+    <div className={style.emptyCart}>
+      Корзина пуста :{"("}
+    </div>
   );
 };
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-import style from "./button.module.scss" 
+import style from "./index.module.scss" 
 
 const Button: React.FC = () => {
   return <div className={style.button}>Заказать</div>;
