@@ -21,9 +21,7 @@ const responseProduct = () => {
       rating: { value: 3, count: 20 },
     };
 
-    Math.round(Math.random()) === 1
-      ? productList.push(sale)
-      : productList.push(notSale);
+    i > 50 ? productList.push(sale) : productList.push(notSale);
   }
   return { data: productList };
 };
