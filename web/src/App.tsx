@@ -11,6 +11,15 @@ import Details from "./pages/details";
 import Catalog from "./pages/catalog";
 
 const App: React.FC = () => {
+
+  fetch('http://127.0.0.1:81')
+  .then((response) => {
+    return response.json();
+  })
+  .then((data) => {
+    console.log(data);
+  });
+
   return (
     <div className={style.wrapper}>
       <Header />
@@ -19,8 +28,8 @@ const App: React.FC = () => {
         <Route path="/basket" element={<Basket />} />
         <Route path="/catalog" element={<Catalog />} />
         <Route path="/catalog/details">
-          <Route index element={<></>}/>
-          <Route path=":id/:title" element={<Details />}/>
+          <Route index element={<></>} />
+          <Route path=":id/:title" element={<Details />} />
         </Route>
       </Routes>
       <Footer />
