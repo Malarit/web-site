@@ -1,0 +1,24 @@
+.root {
+  display: flex;
+  margin-top: 20px;
+}
+.categories {
+  width: 300px;
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+  li {
+    margin-left: 10px;
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    button {
+      height: 50px;
+    }
+  }
+}
+.product {
+}

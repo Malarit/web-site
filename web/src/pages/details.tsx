@@ -10,6 +10,7 @@ import Product from "../components/product";
 const Details: React.FC = () => {
   const dispatch = useDispatch();
   let flag = React.useRef(true);
+  
   React.useEffect(() => {
     if (flag.current) dispatch<any>(fetchProducts());
     flag.current = false;

@@ -25,6 +25,7 @@ const Header: React.FC = () => {
   const CountCard = useSelector(selectAllCard);
 
   const { width } = useWindowDimensions();
+  
   return (
     <header className={style.root}>
       <div className={cn(style.wrapper, appStyle.container)}>

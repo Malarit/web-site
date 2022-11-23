@@ -9,20 +9,14 @@ import Home from "./pages/home";
 import Basket from "./pages/basket";
 import Details from "./pages/details";
 import Catalog from "./pages/catalog";
+import Admin from "./pages/admin";
 
 const App: React.FC = () => {
 
-  fetch('http://127.0.0.1:81')
-  .then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    console.log(data);
-  });
 
   return (
     <div className={style.wrapper}>
-      <Header />
+      {window.location.pathname != "/admin" && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/basket" element={<Basket />} />
@@ -31,8 +25,9 @@ const App: React.FC = () => {
           <Route index element={<></>} />
           <Route path=":id/:title" element={<Details />} />
         </Route>
+        <Route path="/admin" element={<Admin />} />
       </Routes>
-      <Footer />
+      {window.location.pathname != "/admin" && <Footer />}
     </div>
   );
 };
