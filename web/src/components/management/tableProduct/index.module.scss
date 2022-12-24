@@ -1,0 +1,44 @@
+.root {
+  overflow: scroll;
+  width: 90vw;
+  height: 90vh;
+  margin-top: 10px;
+  button {
+    width: 200px;
+  }
+}
+.table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin-bottom: 50px;
+  thead {
+    th {
+      text-align: center;
+      padding: 0 10px;
+    }
+  }
+  tbody {
+    tr {
+      &:nth-child(2n) {
+        background-color: rgb(209, 214, 255);
+      }
+    }
+    td {
+      padding: 0 10px;
+      overflow-wrap: break-word;
+      width: min-content;
+      &.long {
+        width: 200px;
+        max-width: 200px;
+        overflow-wrap: break-word;
+      }
+    }
+    button {
+      width: 100%;
+    }
+  }
+  td,
+  th {
+    border: #000 solid 1px;
+  }
+}

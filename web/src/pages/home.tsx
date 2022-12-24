@@ -1,7 +1,8 @@
 import React from "react";
-
 import { useSelector, useDispatch } from "react-redux";
+
 import { fetchProducts } from "../store/slices/product/slice";
+import { fetchCategory } from "../store/slices/category/slice";
 import {
   selectByDiscount,
   selectByNotDiscount,
@@ -26,6 +27,10 @@ import sliderImg2 from "../assets/banner/b2.webp";
 import "react-alice-carousel/lib/scss/alice-carousel.scss";
 import "../components/carousel/carousel.scss";
 
+
+import { fetchUser } from "../store/slices/user/slice";
+import { RootState } from "../store/store";
+
 const sliderList = [
   sliderImg,
   sliderImg2,
@@ -35,7 +40,6 @@ const sliderList = [
   sliderImg2,
   sliderImg,
 ];
-
 
 const categoryList = [
   { imgUrl: categoryImg1, title: "Молоко, сыр, яйцо" },
@@ -50,13 +54,18 @@ const categoryList = [
   { imgUrl: categoryImg2, title: "Мясо, птица, колбасы" },
 ];
 
-const Home: React.FC = () => {
+const Home: React.FC = React.memo(() => {
   const dispatch = useDispatch();
   let flag = React.useRef(true);
   React.useEffect(() => {
-    if (flag.current) dispatch<any>(fetchProducts());
+    if (flag.current) dispatch<any>(fetchProducts({ discount: 0 }));
+    dispatch<any>(fetchCategory());
+    // dispatch<any>(fetchUser());
     flag.current = false;
   }, []);
+
+  const user = useSelector((state: RootState) => state.userReducer.user);
+  console.log(user);
 
   const productSale = useSelector(selectByDiscount);
   const product = useSelector(selectByNotDiscount);
@@ -68,18 +77,14 @@ const Home: React.FC = () => {
       <Offers
         title="Наши спецпредложения"
         imgUrl={OffersImg}
-        card={productSale.map((obj) => ({ ...obj }))}
+        card={productSale}
       />
       <Banner imgUrlTable={bannerTable} imgUrlPhone={bannerPhone} />
-      <Offers
-        title="Часто покупают"
-        imgUrl={OffersImg}
-        card={product.map((obj) => ({ ...obj }))}
-      />
+      <Offers title="Часто покупают" imgUrl={OffersImg} card={product} />
       <Banner imgUrlTable={bannerTable} imgUrlPhone={bannerPhone} />
       <Subscribe />
     </div>
   );
-};
+});
 
 export default Home;

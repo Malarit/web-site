@@ -86,11 +86,8 @@ $maxWPhone: 574px;
 }
 .carousel {
   width: 100%;
-  overflow: hidden;
-  position: relative;
-  & div div:nth-of-type(1) ul {
-    width: inherit;
-  }
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .buttonL {

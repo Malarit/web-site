@@ -4,6 +4,13 @@ from pydantic import BaseSettings, PostgresDsn, validator
 
 
 class Settings(BaseSettings):
+
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+    REFRESH_TOKEN_EXPIRE_MINUTES: int
+    ALGORITHM: str
+    JWT_SECRET_KEY: str
+    JWT_REFRESH_SECRET_KEY: str
+
     POSTGRES_SERVER: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
@@ -26,6 +33,7 @@ class Settings(BaseSettings):
     class Config:
         case_sensitive = True
         env_file = ".env"
+        env_file_encoding = 'utf-8'
 
 
 settings = Settings()

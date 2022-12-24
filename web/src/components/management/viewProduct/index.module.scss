@@ -1,0 +1,65 @@
+.root {
+  max-width: 500px;
+  min-width: 100%;
+  height: 500px;
+  position: absolute;
+  display: flex;
+  border: 1px rgba(0, 0, 0, 0.261) solid;
+  margin: 10px 0;
+}
+.img {
+  max-width: 150px;
+  overflow-y: scroll;
+  max-height: 500px;
+  img {
+    max-width: 100%;
+    padding: 5px 0px;
+  }
+  input {
+    width: inherit;
+    padding: 5px 0px;
+  }
+  div {
+    position: relative;
+    span {
+      position: absolute;
+      color: red;
+      bottom: 5px;
+      right: 5px;
+      cursor: pointer;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+  }
+}
+.data {
+  margin: 0 15px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 10px;
+
+  div {
+    height: max-content;
+    display: flex;
+    flex-direction: column;
+    &:last-of-type {
+      button {
+        width: 100%;
+        margin-bottom: 15px;
+      }
+    }
+  }
+}
+textarea {
+  width: 400px;
+  height: 140px;
+}
+button {
+  width: 100px;
+  height: 30px;
+}

@@ -10,18 +10,18 @@ import Product from "../components/product";
 const Details: React.FC = () => {
   const dispatch = useDispatch();
   let flag = React.useRef(true);
-  
+
   React.useEffect(() => {
-    if (flag.current) dispatch<any>(fetchProducts());
+    if (flag.current) dispatch<any>(fetchProducts({ discount: 0 }));
     flag.current = false;
   }, []);
 
   const params = useParams();
-  const items = useSelector(selectById(Number(params.id)));
+  const item = useSelector(selectById(Number(params.id)));
 
   return (
     <div className={appStyle.container}>
-      <Product items={{ ...items }} />
+      {item ? <Product item={item} /> : <></>}
     </div>
   );
 };

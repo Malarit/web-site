@@ -17,59 +17,54 @@ import heart from "../../../assets/header/img/heart.svg";
 const handleDragStart = (e: React.DragEvent<HTMLDivElement>) =>
   e.preventDefault();
 
-const Card: React.FC<{ card: card; classes?: classes }> = ({
-  card,
-  classes,
-}) => {
-  const { width } = useWindowDimensions();
-  const linkTitle = card.title.replace(/[\ \%\* ]/g, (item) => {
-    if (item === " ") return "-";
-    else if (item === "%") return "";
-    else return item;
-  });
+const Card: React.FC<{ card: card; classes?: classes }> = React.memo(
+  ({ card, classes }) => {
+    const { width } = useWindowDimensions();
+    const linkTitle = card.title.replace(/[\ \%\* ]/g, (item) => {
+      if (item === " ") return "-";
+      else if (item === "%") return "";
+      else return item;
+    });
 
-  return (
-    <div
-      onDragStart={handleDragStart}
-      className={cn(style.root, classes?.cardRoot)}
-    >
-      <img
-        className={cn(style.favorite, classes?.cardFavorite)}
-        src={heart}
-        alt=""
-      />
-
-      {card.discount && card.discount !== 0 ? (
-        <span>-{card.discount}%</span>
-      ) : (
-        <></>
-      )}
-
-      <div>
-        <Link to={`/catalog/details/${card.id}/${linkTitle}`}>
-          <img src={card.imgUrl} alt="" />
-        </Link>
-      </div>
-
-      <div className={cn(style.rating, classes?.cardRating)}>
-        <Rating
-          initialValue={card.rating.value}
-          readonly
-          size={width > 754 ? 20 : 15}
+    return (
+      <div
+        onDragStart={handleDragStart}
+        className={cn(style.root, classes?.cardRoot)}
+      >
+        <img
+          className={cn(style.favorite, classes?.cardFavorite)}
+          src={heart}
+          alt=""
         />
-        <span>({card.rating.count})</span>
+
+        {card.discount && card.discount !== 0 ? (
+          <span>-{card.discount}%</span>
+        ) : (
+          <></>
+        )}
+
+        <div>
+          <Link to={`/catalog/details/${card.id}/${linkTitle}`}>
+            <img src={"http://127.0.0.1:5000" + card.imgUrl[0].url} alt="" />
+          </Link>
+        </div>
+
+        <div className={cn(style.rating, classes?.cardRating)}>
+          <Rating
+            initialValue={(card.rating.value / card.rating.count) | 0}
+            readonly
+            size={width > 754 ? 20 : 15}
+          />
+          <span>({card.rating.count})</span>
+        </div>
+
+        <div className={cn(style.title, classes?.cardTitle)}>{card.title}</div>
+
+        <Price card={card} classes={classes}></Price>
+        <Button card={card} classes={classes}></Button>
       </div>
-
-      <div className={cn(style.title, classes?.cardTitle)}>{card.title}</div>
-      
-      <Price card={card} classes={classes}></Price>
-      <Button card={card} classes={classes}></Button>
-    </div>
-  );
-};
-
-
-
-
+    );
+  }
+);
 
 export default Card;

@@ -1,0 +1,58 @@
+.popup {
+  width: 100%;
+  position: relative;
+  input {
+    width: 100%;
+  }
+  div {
+    width: 100%;
+    display: flex;
+    position: relative;
+    align-items: center;
+    z-index: 20;
+    &:nth-of-type(1) {
+      span {
+        transform: rotate(90deg);
+        position: absolute;
+        right: 3%;
+        font-size: 25px;
+      }
+    }
+    &:nth-of-type(2) {
+      &.active {
+        display: block;
+      }
+      display: none;
+      position: absolute;
+      left: 0;
+      background-color: #fff;
+      border: 1px solid #000;
+      top: 35px;
+      ul {
+        list-style-type: none;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        max-height: 200px;
+        overflow-y: auto;
+        li {
+          width: 100%;
+          cursor: pointer;
+          padding: 5px;
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
+          -khtml-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          &:nth-child(2n) {
+            background-color: rgb(231, 239, 252);
+          }
+          &:hover {
+            color: rgb(211, 66, 255);
+          }
+        }
+      }
+    }
+  }
+}

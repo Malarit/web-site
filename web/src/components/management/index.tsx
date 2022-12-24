@@ -1,54 +1,38 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { fetchProducts } from "../../store/slices/product/slice";
+
+import { selectAllCategory } from "../../store/slices/category/selectors";
+import { categoryType } from "../../store/slices/category/types";
+
+import GetTree from "./getTree";
+import AddProduct from "./addProduct";
+import TableProduct from "./tableProduct";
 
 import style from "./index.module.scss";
-import axios from "axios";
 
 const Management: React.FC = () => {
+  const category = useSelector(selectAllCategory);
+  const [activeCategory, setActiveCategory] = React.useState<categoryType>();
+
   React.useEffect(() => {
-    axios.get("http://127.0.0.1:5000/api/admin/category").then((response) => {
-      console.log(response.data);
-    });
-  }, []);
-
-  const [categoryValue, setCategoryValue] = React.useState<string>("");
-
-  const postCategory = (name: string, id?: number) => {
-    axios.post("http://127.0.0.1:5000/api/admin/category", {
-      name: name,
-      parent_id: id,
-    });
-  };
+    if (category[0]) {
+      setActiveCategory(category[0][0]);
+    }
+  }, [category]);
 
   return (
     <div className={style.root}>
       <div className={style.categories}>
-        <ul>
-          Категории
-          <li>
-            scss
-            <ul>
-              <li>50</li>
-            </ul>
-          </li>
-          <li>scss</li>
-        </ul>
-
-        <div>
-          <input
-            type="text"
-            value={categoryValue}
-            onChange={(e) => setCategoryValue(e.target.value)}
-          />
-          <input type="text" />
-          <button
-            onClick={() => {
-              postCategory(categoryValue);
-            }}
-          ></button>
-        </div>
-
+        <GetTree
+          activeCategory={activeCategory}
+          setActiveCategory={setActiveCategory}
+        />
       </div>
-      <div className={style.product}>Продукты</div>
+      <div className={style.product}>
+        <TableProduct activeCategory={activeCategory} />
+      </div>
     </div>
   );
 };

@@ -18,13 +18,13 @@ const Price: React.FC<cardComponents> = ({ card, classes }) => {
         {card.discount ? (
           <>
             <div>
-              {getPercentage(card.price, card.discount) * (card.count || 1)},00
+              {getPercentage(card.price, card.discount) },00
               ₽
             </div>
-            <span>{card.price * (card.count || 1)},00 ₽</span>
+            <span>{card.price },00 ₽</span>
           </>
         ) : (
-          <div>{card.price * (card.count || 1)},00 ₽</div>
+          <div>{card.price },00 ₽</div>
         )}
       </div>
     </>

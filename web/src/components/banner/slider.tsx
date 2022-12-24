@@ -9,7 +9,7 @@ import style from "./slider.module.scss";
 const handleDragStart = (e: React.DragEvent<HTMLImageElement>) =>
   e.preventDefault();
 
-const Slider: React.FC<{ imgUrl: string[] }> = ({ imgUrl }) => {
+const Slider: React.FC<{ imgUrl: string[] }> = React.memo(({ imgUrl }) => {
   const { width } = useWindowDimensions();
 
   return (
@@ -39,6 +39,6 @@ const Slider: React.FC<{ imgUrl: string[] }> = ({ imgUrl }) => {
       />
     </div>
   );
-};
+});
 
 export default Slider;

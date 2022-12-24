@@ -25,7 +25,7 @@ export const basketSlice = createSlice({
             count: 1,
           });
 
-      state.totalPrice = calcTotalPrice(state.items);
+      state.totalPrice = calcTotalPrice(state);
     },
     removeItem: (state, action: PayloadAction<card>) => {
       const findProduct = state.items.find(
@@ -36,7 +36,7 @@ export const basketSlice = createSlice({
         ? (state.items = state.items.filter((obj) => obj.id !== findProduct.id))
         : findProduct!.count!--;
 
-      state.totalPrice = calcTotalPrice(state.items);
+      state.totalPrice = calcTotalPrice(state);
     },
   },
 });

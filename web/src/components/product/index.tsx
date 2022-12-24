@@ -1,5 +1,4 @@
 import React from "react";
-import ImageGallery from "react-image-gallery";
 import { useWindowDimensions } from "../../utils/getWindowSize";
 import { Rating } from "react-simple-star-rating";
 
@@ -10,25 +9,20 @@ import About from "./about";
 import ImgSlider from "./imgSlider";
 import DUnderline from "./dUnderline";
 
+import { card } from "../../store/slices/product/types";
+
 import style from "./index.module.scss";
-import "react-image-gallery/styles/scss/image-gallery.scss";
 
 const handleDragStart = (e: React.DragEvent<HTMLDivElement>) =>
   e.preventDefault();
 
-const Product: React.FC<{ items: any }> = ({ items }) => {
+const Product: React.FC<{ item: card }> = ({ item }) => {
   const [select, setSelect] = React.useState<number>(0);
   const { width } = useWindowDimensions();
   const refButtons1 = React.useRef<any>();
   const refButtons2 = React.useRef<any>();
 
-  const imgUrls = [
-    items.imgUrl,
-    items.imgUrl,
-    items.imgUrl,
-    items.imgUrl,
-    items.imgUrl,
-  ];
+  const imgUrls = item.imgUrl.map((obj) => `http://127.0.0.1:5000` + obj.url);
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -43,17 +37,17 @@ const Product: React.FC<{ items: any }> = ({ items }) => {
           </div>
         </div>
         <div className={style.block2}>
-          <div className={style.title}>{items.title}</div>
+          <div className={style.title}>{item.title}</div>
           <div className={style.rating}>
             <Rating
-              initialValue={items.rating?.value || 0}
+              initialValue={item.rating?.value || 0}
               readonly
               size={width > 754 ? 20 : 15}
             />{" "}
-            <span>({items.rating?.count || 0})</span>
+            <span>({item.rating?.count || 0})</span>
           </div>
-          <Price card={items} />
-          <Button card={items} />
+          <Price card={item} />
+          <Button card={item} />
         </div>
         <div className={style.block3}></div>
       </div>
@@ -68,8 +62,8 @@ const Product: React.FC<{ items: any }> = ({ items }) => {
             </button>
           </DUnderline>
         </div>
-        {select === 0 && <About />}
-        {select === 1 && <Reviews items={items} width={width} />}
+        {select === 0 && <About item={item}/>}
+        {select === 1 && <Reviews items={item} width={width} />}
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ type category = {
   card: card[];
 };
 
-const Category: React.FC<category> = ({ title, card }) => {
+const Category: React.FC<category> = React.memo(({ title, card }) => {
   return (
     <div className={style.wrapper}>
       <div className={style.title}>{title}</div>
@@ -20,6 +20,6 @@ const Category: React.FC<category> = ({ title, card }) => {
       </div>
     </div>
   );
-};
-//
+});
+
 export default Category;

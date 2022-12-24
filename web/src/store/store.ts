@@ -13,10 +13,14 @@ import {
 
 import basketReducer from "./slices/basket/slice";
 import productsReducer from "./slices/product/slice";
+import categoryReducer from "./slices/category/slice";
+import userReducer from "./slices/user/slice";
 
 const rootReducer = combineReducers({
   basketReducer,
   productsReducer,
+  categoryReducer,
+  userReducer,
 });
 
 const persistConfig = {

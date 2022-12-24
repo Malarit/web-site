@@ -16,7 +16,7 @@ const App: React.FC = () => {
 
   return (
     <div className={style.wrapper}>
-      {window.location.pathname != "/admin" && <Header />}
+      {window.location.pathname !== "/admin" && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/basket" element={<Basket />} />
@@ -27,7 +27,7 @@ const App: React.FC = () => {
         </Route>
         <Route path="/admin" element={<Admin />} />
       </Routes>
-      {window.location.pathname != "/admin" && <Footer />}
+      {window.location.pathname !== "/admin" && <Footer />}
     </div>
   );
 };

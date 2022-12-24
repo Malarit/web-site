@@ -7,7 +7,6 @@ const DUnderline: React.FC<{ children: any; refs: any; state: number }> = ({
   refs,
   state,
 }) => {
-  // refs.refButtons1.current?.offsetLeft
 
   return (
     <div className={style.root}>

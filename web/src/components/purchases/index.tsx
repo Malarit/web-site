@@ -40,7 +40,7 @@ const Purchases: React.FC = () => {
     enabled: OnScrollBottom(),
   };
 
-  return items.length != 0 ? (
+  return items.length !== 0 ? (
     <>
       {width < 1000 && <Aside {...asideProps} />}
       <div className={style.root} ref={refRoot}>

@@ -11,6 +11,7 @@ $maxWPhone: 574px;
   align-items: center;
   height: inherit;
   width: inherit;
+  position: relative;
   @media (max-width: $maxWTable) {
     position: relative;
     justify-content: center;
@@ -115,11 +116,15 @@ $maxWPhone: 574px;
 .icons {
   display: flex;
   margin-left: auto;
+  align-items: center;
   div {
     position: relative;
     width: auto;
     height: inherit;
     cursor: pointer;
+    img {
+      width: 25px;
+    }
     span {
       position: absolute;
       width: 18px;

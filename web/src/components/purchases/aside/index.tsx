@@ -41,8 +41,10 @@ const Aside: React.FC<aside> = (props) => {
                 <li key={obj.id}>
                   {obj.title}
                   <div>
-                    <span>x{obj.count}</span>
-                    <span>{obj.price * (obj.count || 1)} ₽</span>
+                    {/* <span>x{obj.count}</span>
+                    <span>{obj.price * (obj.count || 1)} ₽</span> */}
+                    <span>x{}</span>
+                    <span>{obj.price } ₽</span>
                   </div>
                 </li>
               ))}
