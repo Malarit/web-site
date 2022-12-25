@@ -1,12 +1,10 @@
 import React from "react";
 import cn from "classnames";
+import { useDispatch } from "react-redux";
 
-import {
-  postAuthorization,
-  postRegistration,
-} from "../../../utils/fetch";
+import { postAuthorization, postRegistration } from "../../../utils/fetch";
 import { validateEmail } from "../../../utils/validateEmail";
-import { setCookiesToken } from "../../../utils/cookies";
+import { fetchUser } from "../../../store/slices/user/slice";
 
 import { password, checkServer, validation, check } from "./types";
 
@@ -41,6 +39,8 @@ const Authorization: React.FC = () => {
   const [validation, setValidation] =
     React.useState<validation>(initialValidation);
 
+  const dispatch = useDispatch();
+
   function checkObj(obj: { [key: string]: any }, check_val: any) {
     return Object.values(obj).includes(check_val);
   }
@@ -58,10 +58,9 @@ const Authorization: React.FC = () => {
 
     let result: any;
     await postAuthorization(data).then((response: any) => (result = response));
-
-    if (!result.access_token) setCheckAuthorization(true);
+    if (result.status !== 200) setCheckAuthorization(true);
     else {
-      // setCookiesToken(result.access_token, result.refresh_token);
+      await dispatch<any>(fetchUser());
     }
   };
 
@@ -94,10 +93,8 @@ const Authorization: React.FC = () => {
           username: target.login.value,
           password: target.firstPassword.value,
         };
-        await postAuthorization(data).then(
-          (response: any) => (result = response)
-        );
-        // setCookiesToken(result.access_token, result.refresh_token);
+        await postAuthorization(data);
+        await dispatch<any>(fetchUser());
       }
     } else {
       let tuple: any = {};

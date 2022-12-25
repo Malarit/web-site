@@ -27,9 +27,21 @@ export const postAuthorization = async (data: {
     const response = await axios.post(
       "http://127.0.0.1:5000/api/authorization",
       data,
-      { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+      { withCredentials: true }
     );
-    return response.data;
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const logout = async () => {
+  try {
+    const response = await axios.get(
+      "http://127.0.0.1:5000/api/logout",
+      { withCredentials: true }
+    );
+    return response;
   } catch (error) {
     return error;
   }

@@ -1,14 +1,17 @@
-from fastapi import APIRouter, Depends, Query, HTTPException, Response
+from datetime import datetime
+from fastapi import APIRouter, Depends, Query, HTTPException, Response, Cookie
 from sqlalchemy.orm import Session
+from typing import Union
 from fastapi.encoders import jsonable_encoder
 from pydantic import validate_email
-from fastapi.security import OAuth2PasswordRequestForm
-from fastapi_jwt_auth import AuthJWT
+
+# from fastapi_jwt_auth import AuthJWT
 
 import models
 import schemas
-from deps import get_current_user
-from utils import get_hashed_password, verify_password, create_access_token, create_refresh_token
+from utils import (get_hashed_password, verify_password, create_access_token,
+                   create_refresh_token, decode_access_token, decode_refresh_token,
+                   set_cookie)
 from db import SessionLocal, engine
 
 
@@ -31,16 +34,10 @@ async def root(db: Session = Depends(get_db)):
     return {"gg": "gg"}
 
 
-@router.get('/api/me', tags=["user"])
-async def get_me(user: schemas.user = Depends(get_current_user)):
-    return user
-
-
 @router.post("/api/authorization", tags=["user"])
-async def authorization_user(
+async def authorization(
     response: Response,
     form_data: schemas.user,
-    Authorize: AuthJWT = Depends(),
     db: Session = Depends(get_db)
 ):
 
@@ -51,16 +48,48 @@ async def authorization_user(
         raise HTTPException(status_code=400, detail={
             "details": "Incorrect email or password"})
 
-    access_token = create_access_token(query_login['id'])
-    
-    authjwt_token_location: set = {"cookies"}
-    
-    Authorize.set_access_cookies(access_token)
-    
-    return {
-        "access_token": access_token,
-        "refresh_token": create_refresh_token(query_login['id']),
-    }
+    set_cookie(response, query_login['id'])
+
+    return {"Ok": 200}
+
+
+@router.get('/api/me', tags=["user"])
+async def get_me(
+    response: Response,
+    access_token: str | None = Cookie(default=None),
+    refresh_token: str | None = Cookie(default=None),
+    db: Session = Depends(get_db)
+):
+
+    def get_user_id(id: int):
+        login = db.query(models.User.id, models.User.username).filter(
+            models.User.id == id).first()
+
+        if not login:
+            raise HTTPException(status_code=401, detail={
+                "details": "The user belonging to this token no logger exist"})
+        return login
+
+    if access_token == None or refresh_token == None:
+        raise HTTPException(status_code=403, detail={
+            "details": "Could not validate credentials"})
+
+    token_access_data = decode_access_token(access_token)
+
+    if not token_access_data:
+        token_refresh_data = decode_refresh_token(refresh_token)
+        if not token_refresh_data:
+            raise HTTPException(status_code=403, detail={
+                "details": "Could not validate credentials or Token expired"})
+
+        query_login = get_user_id(token_refresh_data["sub"])
+
+        set_cookie(response, query_login['id'])
+
+    else:
+        query_login = get_user_id(token_access_data["sub"])
+
+    return query_login
 
 
 @router.post("/api/registration", tags=["user"])
@@ -103,6 +132,26 @@ async def add_user(data: schemas.registration, db: Session = Depends(get_db)):
 
     db.add(models.User(**jsonable_encoder(data)))
     db.commit()
+
+    return {"Ok": 200}
+
+
+@router.get("/api/logout", tags=["user"])
+async def logout(response: Response,):
+    try:
+        response.delete_cookie(
+            key="access_token",
+            samesite='none',
+            secure=True,
+            domain="127.0.0.1")
+        response.delete_cookie(
+            key="refresh_token",
+            samesite='none',
+            secure=True,
+            domain="127.0.0.1")
+    except:
+        raise HTTPException(status_code=400, detail={
+            "details": "Failed to logout"})
 
     return {"Ok": 200}
 

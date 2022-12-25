@@ -60,12 +60,10 @@ const Home: React.FC = React.memo(() => {
   React.useEffect(() => {
     if (flag.current) dispatch<any>(fetchProducts({ discount: 0 }));
     dispatch<any>(fetchCategory());
-    // dispatch<any>(fetchUser());
+    dispatch<any>(fetchUser());
     flag.current = false;
   }, []);
 
-  const user = useSelector((state: RootState) => state.userReducer.user);
-  console.log(user);
 
   const productSale = useSelector(selectByDiscount);
   const product = useSelector(selectByNotDiscount);

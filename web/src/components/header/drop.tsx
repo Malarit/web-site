@@ -10,13 +10,8 @@ import { drawNestedSetsTree } from "../../utils/drawNestedSetsTree";
 
 import style from "./drop.module.scss";
 
-
 const ListItem: React.FC<{ item: categoryType }> = ({ item }) => {
-  return (
-    <li key={item.id}>
-          {item.name}
-    </li>
-  );
+  return <li key={item.id}>{item.name}</li>;
 };
 
 const Drop: React.FC<{ active: boolean }> = ({ active }) => {
@@ -33,9 +28,7 @@ const Drop: React.FC<{ active: boolean }> = ({ active }) => {
   return (
     <div className={cn({ [style.root]: true, [style.active]: active })}>
       <div className={style.container}>
-        <div className={style.dropBlock}>
-          {getTree()}
-        </div>
+        <div className={style.dropBlock}>{getTree()}</div>
         <div></div>
       </div>
     </div>

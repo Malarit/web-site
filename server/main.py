@@ -11,7 +11,6 @@ app = FastAPI()
 app.mount("/api/media", StaticFiles(directory="media"), name="media")
 
 origins = [
-    "http://127.0.0.1:5000",
     "http://localhost:3000",
 ]
 
@@ -21,6 +20,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    
 )
 
 

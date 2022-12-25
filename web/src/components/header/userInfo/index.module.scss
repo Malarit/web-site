@@ -1,0 +1,11 @@
+.root {
+  div {
+    &:nth-of-type(1) {
+      font-size: 18px;
+    }
+    &:last-of-type {
+      margin-top: 20px;
+      color: rgba(255, 0, 0, 0.871);
+    }
+  }
+}

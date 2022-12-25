@@ -1,12 +1,11 @@
 import React from "react";
 import cn from "classnames";
 import { Link } from "react-router-dom";
-import { useSelector} from "react-redux";
-
-
+import { useSelector } from "react-redux";
 
 import { useWindowDimensions } from "../../utils/getWindowSize";
 import { selectAllCard } from "../../store/slices/basket/selectors";
+import { selectUser } from "../../store/slices/user/selectors";
 
 import Search from "../search";
 import Drop from "./drop";
@@ -20,6 +19,7 @@ import basket from "../../assets/header/img/basket.svg";
 import search from "../../assets/header/img/search.svg";
 import whiteSearch from "../../assets/header/img/whiteSearch.svg";
 import authorization from "../../assets/header/img/account.svg";
+import UserInfo from "./userInfo";
 
 const Header: React.FC = () => {
   const [activeMenu, setActiveMenu] = React.useState<boolean>(false);
@@ -28,9 +28,10 @@ const Header: React.FC = () => {
     React.useState<boolean>(false);
 
   const CountCard = useSelector(selectAllCard);
+  const user = useSelector(selectUser);
 
   const { width } = useWindowDimensions();
-  
+
   return (
     <header className={style.root}>
       <div className={cn(style.wrapper, appStyle.container)}>
@@ -78,7 +79,11 @@ const Header: React.FC = () => {
             </div>
           )}
         </div>
-        {activeAuthorization && <Authorization />}
+        {activeAuthorization && (
+          <div className={style.user}>
+            {user ? <UserInfo user={user} /> : <Authorization />}
+          </div>
+        )}
       </div>
     </header>
   );

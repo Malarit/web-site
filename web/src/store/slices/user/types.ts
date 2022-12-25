@@ -1,6 +1,6 @@
 export type user =
   | {
-      exp: number;
-      sub: number;
+      id: number;
+      username: string;
     }
   | undefined;
