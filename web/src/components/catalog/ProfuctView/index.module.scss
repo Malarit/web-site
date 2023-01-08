@@ -1,0 +1,68 @@
+$maxWTable: 1000px;
+$maxWPhone: 574px;
+
+.root {
+  position: relative;
+  width: 100%;
+
+}
+.paginate_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.product {
+  width: 100%;
+  justify-content: center;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, 200px);
+  padding: 10px;
+  @media (max-width: $maxWPhone) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.void {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 20px;
+}
+.paginate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: -20px;
+  width: 100%;
+
+  li {
+    list-style-type: none;
+    margin: 0 5px;
+    border-radius: 50%;
+  }
+  a {
+    display: block;
+    color: #000;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ff00d9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+}
+:global {
+  .selected {
+    background-color: #ff00d9;
+  }
+}

@@ -1,7 +1,10 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import style from "./app.module.scss";
 import "./index.scss";
+
+import { fetchUser } from "./store/slices/user/slice";
 
 import Header from "./components/header";
 import Footer from "./components/footer";
@@ -12,7 +15,10 @@ import Catalog from "./pages/catalog";
 import Admin from "./pages/admin";
 
 const App: React.FC = () => {
-
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch<any>(fetchUser());
+  }, []);
 
   return (
     <div className={style.wrapper}>

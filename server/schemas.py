@@ -1,5 +1,5 @@
 import json
-from fastapi import HTTPException
+from fastapi import HTTPException, Query
 from typing import Optional
 from pydantic import BaseModel, UUID4, validator, Field
 
@@ -10,12 +10,12 @@ class category(BaseModel):
 
 
 class user(BaseModel):
-    username: str
+    email: str
     password: str
 
 
 class registration(user):
-    email: str
+    username: str
     secondPassword: str
 
     @validator('secondPassword')
@@ -38,8 +38,8 @@ class product(BaseModel):
     price: int
     discount: int = Field(None, gt=-1, lt=101)
     category_id: int
+    brand_id: int
     packaging: str
-    brand: str
     description: str
     weight: int
 
@@ -52,3 +52,9 @@ class product(BaseModel):
         if isinstance(value, str):
             return cls(**json.loads(value))
         return value
+
+
+class assessment(BaseModel):
+    likeIt: bool
+    reviews_id: int
+    user_id: int

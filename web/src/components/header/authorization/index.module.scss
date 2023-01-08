@@ -32,7 +32,7 @@ form {
     }
   }
 
-  button {
+  & > button {
     width: 150px;
     border: none;
     color: rgb(8, 45, 194);

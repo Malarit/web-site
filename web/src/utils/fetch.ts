@@ -19,8 +19,79 @@ export const postRegistration = async (data: {
   }
 };
 
+export const getBrands = async (state: React.SetStateAction<any>) => {
+  try {
+    const response = await axios.get("http://127.0.0.1:5000/api/brand");
+    state(response.data);
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getReviews = async (
+  state: React.SetStateAction<any>,
+  id: number,
+  user_id?: number
+) => {
+  try {
+    const response = await axios.get("http://127.0.0.1:5000/api/reviews", {
+      params: { id, user_id },
+    });
+    state(
+      response.data as {
+        id: number;
+        product_id: number;
+        user_id: 1;
+        text: string;
+        value: number;
+        username: string;
+        date: string;
+        like: number;
+        dislike: number;
+        likeIt: boolean;
+      }[]
+    );
+  } catch (error) {
+    return error;
+  }
+};
+
+export const postReviews = async (
+  text: string,
+  product_id: number,
+  user_id: number,
+  value: number
+) => {
+  try {
+    const response = await axios.post("http://127.0.0.1:5000/api/reviews", {
+      text,
+      product_id,
+      user_id,
+      value,
+    });
+  } catch (error) {
+    return error;
+  }
+};
+
+export const postAssessment = async (
+  likeIt: boolean,
+  reviews_id: number,
+  user_id: number
+) => {
+  try {
+    const response = await axios.post("http://127.0.0.1:5000/api/assessment", {
+      likeIt,
+      reviews_id,
+      user_id,
+    });
+  } catch (error) {
+    return error;
+  }
+};
+
 export const postAuthorization = async (data: {
-  username: string;
+  email: string;
   password: string;
 }) => {
   try {
@@ -37,10 +108,9 @@ export const postAuthorization = async (data: {
 
 export const logout = async () => {
   try {
-    const response = await axios.get(
-      "http://127.0.0.1:5000/api/logout",
-      { withCredentials: true }
-    );
+    const response = await axios.get("http://127.0.0.1:5000/api/logout", {
+      withCredentials: true,
+    });
     return response;
   } catch (error) {
     return error;

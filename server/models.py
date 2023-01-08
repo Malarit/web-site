@@ -1,5 +1,6 @@
+import datetime
 from uuid import uuid4
-from sqlalchemy import Column, String, Integer, ForeignKey, Boolean
+from sqlalchemy import Column, String, Integer, ForeignKey, Boolean, DateTime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy_mptt.mixins import BaseNestedSets
@@ -15,13 +16,22 @@ class Product(Base):
     price = Column(Integer(), nullable=False)
     discount = Column(Integer(), nullable=True)
     packaging = Column(String(), nullable=True)
-    brand = Column(String(), nullable=True)
     description = Column(String(), nullable=True)
     weight = Column(Integer(), nullable=True)
+    brand_id = Column(Integer(),  ForeignKey('brand.id'))
     category_id = Column(Integer(), ForeignKey('category.id'))
 
     reviews = relationship('Reviews', backref='product_reviews')
     productImages = relationship('ProductImages', backref='product_images')
+
+
+class Brand(Base):
+    __tablename__ = "brand"
+
+    id = Column(Integer(), primary_key=True)
+    name = Column(String(255), nullable=False)
+
+    product = relationship('Product', backref='brand_product')
 
 
 class ProductImages(Base):
@@ -61,6 +71,17 @@ class Reviews(Base):
     id = Column(Integer(), primary_key=True)
     text = Column(String(), nullable=True)
     value = Column(Integer(), nullable=False)
+    date = Column(DateTime(timezone=True), default=datetime.datetime.today())
 
     product_id = Column(Integer(), ForeignKey('product.id'), nullable=False)
+    user_id = Column(Integer(), ForeignKey('user.id'), nullable=False)
+
+
+class Assessment(Base):
+    __tablename__ = "assessment"
+
+    id = Column(Integer(), primary_key=True)
+    likeIt = Column(Boolean(), nullable=False)
+
+    reviews_id = Column(Integer(), ForeignKey('product.id'), nullable=False)
     user_id = Column(Integer(), ForeignKey('user.id'), nullable=False)

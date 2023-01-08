@@ -4,21 +4,8 @@ import { useWindowDimensions } from "../../utils/getWindowSize";
 import { card } from "../../store/slices/product/types";
 
 import Card from "./card";
-import Button from "../carousel/button";
 
 import style from "./offers.module.scss";
-
-const responsive = {
-  0: {
-    items: 4,
-  },
-  1200: {
-    items: 4,
-  },
-  1300: {
-    items: 6,
-  },
-};
 
 type offers = {
   title: string;
@@ -46,9 +33,11 @@ const Offers: React.FC<offers> = ({ title, imgUrl, card }) => {
         <img src={imgUrl} alt="" />
       </div>
       <div className={style.carousel}>
-        {card.map((item) => (
-          <Card key={item.id} card={{ ...item }} />
-        ))}
+        {card.map((item, id) => {
+          if (id < 6) {
+            return <Card key={item.id} card={{ ...item }} />;
+          }
+        })}
       </div>
     </div>
   );

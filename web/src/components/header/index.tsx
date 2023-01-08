@@ -1,11 +1,12 @@
 import React from "react";
 import cn from "classnames";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useWindowDimensions } from "../../utils/getWindowSize";
 import { selectAllCard } from "../../store/slices/basket/selectors";
 import { selectUser } from "../../store/slices/user/selectors";
+import { fetchCategory } from "../../store/slices/category/slice";
 
 import Search from "../search";
 import Drop from "./drop";
@@ -26,11 +27,41 @@ const Header: React.FC = () => {
   const [activeSearch, setActiveSearch] = React.useState<boolean>(false);
   const [activeAuthorization, setActiveAuthorization] =
     React.useState<boolean>(false);
-
+  const refMenu = React.useRef<any>();
+  const refAuthorization = React.useRef<any>();
+  const refImgAuthorization = React.useRef<any>();
   const CountCard = useSelector(selectAllCard);
   const user = useSelector(selectUser);
-
   const { width } = useWindowDimensions();
+
+  const dispatch = useDispatch();
+  const refFlag = React.useRef<boolean>(true);
+  React.useEffect(() => {
+    if (refFlag.current) dispatch<any>(fetchCategory());
+    refFlag.current = false;
+  }, []);
+
+  React.useEffect(() => {
+    const handleClickBody = (e: MouseEvent) => {
+      const _e = e as MouseEvent & {
+        path: Node[];
+      };
+      if (refMenu.current && !_e.path.includes(refMenu.current))
+        setActiveMenu(false);
+      if (
+        refAuthorization.current &&
+        !_e.path.includes(refAuthorization.current) &&
+        refImgAuthorization.current &&
+        !_e.path.includes(refImgAuthorization.current)
+      )
+        setActiveAuthorization(false);
+    };
+    document.body.addEventListener("click", handleClickBody);
+
+    return () => {
+      document.body.removeEventListener("click", handleClickBody);
+    };
+  }, []);
 
   return (
     <header className={style.root}>
@@ -41,13 +72,13 @@ const Header: React.FC = () => {
         <div
           onClick={() => setActiveMenu(!activeMenu)}
           className={`${style.button} ${activeMenu ? style.active : ""}`}
+          ref={refMenu}
         >
           <div></div>
           <div></div>
           <div></div>
           {width > 1000 ? <span>Каталог</span> : ""}
         </div>
-        <Drop active={activeMenu} />
         <div className={style.search}>
           <Search icon={whiteSearch} />
         </div>
@@ -60,6 +91,7 @@ const Header: React.FC = () => {
           </div>
           <div>
             <img
+              ref={refImgAuthorization}
               onClick={() => setActiveAuthorization(!activeAuthorization)}
               src={authorization}
               alt=""
@@ -80,11 +112,12 @@ const Header: React.FC = () => {
           )}
         </div>
         {activeAuthorization && (
-          <div className={style.user}>
+          <div className={style.user} ref={refAuthorization}>
             {user ? <UserInfo user={user} /> : <Authorization />}
           </div>
         )}
       </div>
+      <Drop active={activeMenu} setActiveMenu={setActiveMenu} />
     </header>
   );
 };

@@ -11,7 +11,7 @@ const About: React.FC<{ item: card }> = ({ item }) => {
         <div>В упаковке</div>
         <div>{item.packaging}</div>
         <div>Бренд</div>
-        <div>{item.brand}</div>
+        <div>{item.brand.name}</div>
         <div>Вес товара</div>
         <div>{item.weight}</div>
         <div>Описание</div>

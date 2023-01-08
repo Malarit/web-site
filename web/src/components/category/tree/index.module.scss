@@ -1,0 +1,22 @@
+.root {
+  width: 100%;
+  ul {
+    display: none;
+    margin-left: 10px;
+    &.active {
+      display: block;
+    }
+  }
+  li {
+    width: 100%;
+    list-style-type: none;
+    position: relative;
+    cursor: pointer;
+    span {
+      position: absolute;
+      transform: rotate(90deg);
+      margin-left: 15px;
+    }
+
+  }
+}

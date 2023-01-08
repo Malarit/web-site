@@ -1,0 +1,27 @@
+.root {
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  & > span {
+   margin-bottom: 10px;
+  }
+  textarea {
+    resize: none;
+    margin: 10px 0;
+  }
+  button {
+    margin: 10px 0;
+    min-width: 130px;
+    height: 35px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff00d9;
+    cursor: pointer;
+    border: none;
+    color: #fff;
+  }
+}

@@ -8,7 +8,7 @@ export interface card {
   discount?: number;
   description: string;
   weight: string;
-  brand: string;
+  brand: { id: number; name: string };
   packaging: string;
 }
 
@@ -17,4 +17,8 @@ export interface ifetchProducts {
   right?: number;
   tree_id?: number;
   discount: number;
+  limit?: number;
+  page?: number;
+  price?: { left: number; right: number };
+  brand_id?: number;
 }

@@ -29,7 +29,12 @@ async def root(db: Session = Depends(get_db)):
     pass
 
 
-# response_model= list[list[schemas.category]]
+@router.post("/api/admin/brand", tags=["admin"])
+async def root(name: str, db: Session = Depends(get_db)):
+    db.add(models.Brand(name=name))
+    db.commit()
+
+    return name
 
 
 @router.post("/api/admin/category", tags=["admin"])

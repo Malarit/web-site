@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { fetchProducts } from "../store/slices/product/slice";
-import { fetchCategory } from "../store/slices/category/slice";
 import {
   selectByDiscount,
   selectByNotDiscount,
@@ -26,10 +25,6 @@ import sliderImg2 from "../assets/banner/b2.webp";
 
 import "react-alice-carousel/lib/scss/alice-carousel.scss";
 import "../components/carousel/carousel.scss";
-
-
-import { fetchUser } from "../store/slices/user/slice";
-import { RootState } from "../store/store";
 
 const sliderList = [
   sliderImg,
@@ -56,17 +51,15 @@ const categoryList = [
 
 const Home: React.FC = React.memo(() => {
   const dispatch = useDispatch();
-  let flag = React.useRef(true);
-  React.useEffect(() => {
-    if (flag.current) dispatch<any>(fetchProducts({ discount: 0 }));
-    dispatch<any>(fetchCategory());
-    dispatch<any>(fetchUser());
-    flag.current = false;
-  }, []);
 
+  React.useEffect(() => {
+    dispatch<any>(fetchProducts({ discount: 0}));
+  }, []);
 
   const productSale = useSelector(selectByDiscount);
   const product = useSelector(selectByNotDiscount);
+
+  console.log(product)
 
   return (
     <div className={appStyle.container}>

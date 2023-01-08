@@ -1,0 +1,41 @@
+$maxWTable: 1000px;
+$maxWPhone: 574px;
+
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  height: 100%;
+  margin-bottom: 50px;
+  @media (max-width: $maxWTable) {
+    flex-direction: column;
+  }
+  & > button {
+    height: 40px;
+    width: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    border-radius: 5px;
+    color: #fff;
+    border: 1.5px solid #ff00d9;
+    background-color: #ff00d9;
+    cursor: pointer;
+    user-select: none;
+    margin-left: 40px;
+    margin-top: 20px;
+  }
+}
+.aside {
+  @media (max-width: $maxWTable) {
+    height: 100%;
+
+    transform: translateX(-500px);
+    transition: 0.5s all ease;
+    position: absolute;
+    z-index: 50;
+    &.active {
+      transform: translateX(0);
+    }
+  }
+}

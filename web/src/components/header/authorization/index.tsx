@@ -38,8 +38,8 @@ const Authorization: React.FC = () => {
   const [password, setPassword] = React.useState<password>(initialPassword);
   const [validation, setValidation] =
     React.useState<validation>(initialValidation);
-
   const dispatch = useDispatch();
+
 
   function checkObj(obj: { [key: string]: any }, check_val: any) {
     return Object.values(obj).includes(check_val);
@@ -52,7 +52,7 @@ const Authorization: React.FC = () => {
     e.preventDefault();
 
     const data = {
-      username: target.login.value,
+      email: target.email.value,
       password: target.password.value,
     };
 
@@ -90,7 +90,7 @@ const Authorization: React.FC = () => {
 
       if (!(checkServer.email && checkServer.login)) {
         const data = {
-          username: target.login.value,
+          email: target.email.value,
           password: target.firstPassword.value,
         };
         await postAuthorization(data);
@@ -159,8 +159,8 @@ const Authorization: React.FC = () => {
           <span>Авторизация</span>
           <div>
             <Input
-              lable="Логин"
-              name="login"
+              lable="Почта"
+              name="email"
               reset={[active]}
               check={checkAuthorization}
               onChange={() => setCheckAuthorization(false)}

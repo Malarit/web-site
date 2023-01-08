@@ -7,7 +7,6 @@ import { selectAllCategory } from "../../store/slices/category/selectors";
 import { categoryType } from "../../store/slices/category/types";
 
 import GetTree from "./getTree";
-import AddProduct from "./addProduct";
 import TableProduct from "./tableProduct";
 
 import style from "./index.module.scss";

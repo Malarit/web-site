@@ -1,25 +1,27 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import cn from "classnames";
-
-import { selectSubCategory } from "../../../store/slices/category/selectors";
-import { categoryType } from "../../../store/slices/category/types";
 
 import style from "./index.module.scss";
 
-const PopupCategory: React.FC<{
-  setPopupCategoryId: React.SetStateAction<any>;
-  defValue?: {id: number, value: string};
-}> = ({ setPopupCategoryId, defValue }) => {
+type item = {
+  id: number;
+  name: string;
+};
+
+const Popup: React.FC<{
+  placeholder: string;
+  setPopupId: React.SetStateAction<any>;
+  defValue?: { id: number; value: string };
+  items: item[];
+}> = ({ setPopupId, defValue, items, placeholder }) => {
   const [activeLi, setActiveLi] = React.useState(false);
   const [popupValue, setPopupValue] = React.useState("");
   const refpopup = React.useRef<any>();
-  const subCategory = useSelector(selectSubCategory);
 
   React.useEffect(() => {
     if (defValue) {
       setPopupValue(defValue.value);
-      setPopupCategoryId(defValue.id);
+      setPopupId(defValue.id);
     }
   }, []);
 
@@ -38,9 +40,9 @@ const PopupCategory: React.FC<{
     };
   }, []);
 
-  const onClickLi = (item: categoryType) => {
+  const onClickLi = (item: item) => {
     setPopupValue(item.name);
-    setPopupCategoryId(item.id);
+    setPopupId(item.id);
     setActiveLi(false);
   };
 
@@ -49,8 +51,7 @@ const PopupCategory: React.FC<{
       <div>
         <input
           type="text"
-          name="category"
-          placeholder={"Категория"}
+          placeholder={placeholder}
           value={popupValue}
           onChange={(e) => setPopupValue(e.target.value)}
           onFocus={() => setActiveLi(true)}
@@ -59,11 +60,11 @@ const PopupCategory: React.FC<{
       </div>
       <div className={cn({ [style.active]: activeLi })}>
         <ul>
-          {subCategory
-            .filter((obj: categoryType) =>
+          {items
+            .filter((obj: item) =>
               obj.name.toLowerCase().includes(popupValue.toLowerCase())
             )
-            .map((item: categoryType) => (
+            .map((item: item) => (
               <li key={item.id} onClick={() => onClickLi(item)}>
                 {item.name}
               </li>
@@ -74,4 +75,4 @@ const PopupCategory: React.FC<{
   );
 };
 
-export default PopupCategory;
+export default Popup;

@@ -1,8 +1,16 @@
 import { categoryType } from "../store/slices/category/types";
+import cn from "classnames";
 
 export function drawNestedSetsTree(
   mass: categoryType[],
-  ReactElement: React.FC<any>
+  ReactElement: React.FC<{ item: categoryType }>,
+  style?:
+    | {
+        readonly [key: string]: string;
+      }
+    | any,
+  activeUl?: any[],
+  getParents?: number[]
 ) {
   let m: JSX.Element[] = [];
   fetchChildElement(m);
@@ -21,13 +29,22 @@ export function drawNestedSetsTree(
         let element: any = [<ReactElement item={item} />];
 
         if (item.left + 1 < item.right) {
+          getParents?.push(item.id);
+
           let childContainer: any[] = [];
           let child = fetchChildElement(
             childContainer,
             item.left + 1,
             item.right - 1
           );
-          element.push(<ul>{child.map((e) => e)}</ul>);
+          element.push(
+            <ul
+              id={`${item.id}`}
+              className={cn({ [style?.active]: activeUl?.includes(item.id) })}
+            >
+              {child.map((e) => e)}
+            </ul>
+          );
         }
 
         container.push(element);

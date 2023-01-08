@@ -7,11 +7,12 @@ import { card } from "../../../store/slices/product/types";
 
 import {
   deleteProductImg,
+  getBrands,
   postProduct,
   putProduct,
 } from "../../../utils/fetch";
 
-import PopupCategory from "../popupCategory";
+import Popup from "../popup";
 
 import style from "./index.module.scss";
 
@@ -21,7 +22,7 @@ type FormValues = {
   discount?: number;
   description: string;
   packaging: string;
-  brand: string;
+  brand_id: number;
   weight: string;
 };
 
@@ -33,11 +34,17 @@ const ViewProduct: React.FC<{
   const { item, setViewProductActive, dispatch } = props;
   const [addFile, setAddFile] = React.useState<File[]>([]);
   const [popupCategoryId, setPopupCategoryId] = React.useState<number>(0);
+  const [popupBrandId, setPopupBrandId] = React.useState<number>(0);
+  const [brand, setBrand] = React.useState([]);
   const { register, handleSubmit, reset } = useForm<FormValues>();
   const subCategory = useSelector(selectSubCategory);
   const categoryItem = subCategory.find(
     (obg) => obg.id == item?.category_id
   )?.name;
+
+  React.useEffect(() => {
+    getBrands(setBrand);
+  }, []);
 
   const resetAsyncForm = React.useCallback(async () => {
     reset();
@@ -67,7 +74,12 @@ const ViewProduct: React.FC<{
 
     formData.append(
       "data",
-      JSON.stringify({ ...data, category_id: popupCategoryId, id: item?.id })
+      JSON.stringify({
+        ...data,
+        category_id: popupCategoryId,
+        id: item?.id,
+        brand_id: popupBrandId,
+      })
     );
 
     for (const file of addFile) {
@@ -146,13 +158,23 @@ const ViewProduct: React.FC<{
           />
         </div>
         <div>
-          <label htmlFor="brand">Бренд</label>
-          <input type="text" {...register("brand")} placeholder={item?.brand} />
+          <label htmlFor="brand_id">Бренд</label>
+          <Popup
+            placeholder="Бренд"
+            items={brand}
+            setPopupId={setPopupBrandId}
+            defValue={{
+              id: item?.brand.id || 0,
+              value: item?.brand.name || "",
+            }}
+          />
         </div>
         <div>
           <label htmlFor="weight">Категория</label>
-          <PopupCategory
-            setPopupCategoryId={setPopupCategoryId}
+          <Popup
+            placeholder="Категория"
+            items={subCategory}
+            setPopupId={setPopupCategoryId}
             defValue={{
               id: item?.category_id || 0,
               value: categoryItem || "",

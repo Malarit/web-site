@@ -1,6 +1,9 @@
 import React from "react";
-import { useWindowDimensions } from "../../utils/getWindowSize";
 import { Rating } from "react-simple-star-rating";
+import { useSelector } from "react-redux";
+
+import { useWindowDimensions } from "../../utils/getWindowSize";
+import { selectUser } from "../../store/slices/user/selectors";
 
 import Button from "./card/button";
 import Price from "./card/price";
@@ -8,6 +11,7 @@ import Reviews from "./reviews";
 import About from "./about";
 import ImgSlider from "./imgSlider";
 import DUnderline from "./dUnderline";
+import Feedback from "./feedback";
 
 import { card } from "../../store/slices/product/types";
 
@@ -19,8 +23,7 @@ const handleDragStart = (e: React.DragEvent<HTMLDivElement>) =>
 const Product: React.FC<{ item: card }> = ({ item }) => {
   const [select, setSelect] = React.useState<number>(0);
   const { width } = useWindowDimensions();
-  const refButtons1 = React.useRef<any>();
-  const refButtons2 = React.useRef<any>();
+  const user = useSelector(selectUser);
 
   const imgUrls = item.imgUrl.map((obj) => `http://127.0.0.1:5000` + obj.url);
 
@@ -43,7 +46,7 @@ const Product: React.FC<{ item: card }> = ({ item }) => {
               initialValue={item.rating?.value || 0}
               readonly
               size={width > 754 ? 20 : 15}
-            />{" "}
+            />
             <span>({item.rating?.count || 0})</span>
           </div>
           <Price card={item} />
@@ -53,17 +56,19 @@ const Product: React.FC<{ item: card }> = ({ item }) => {
       </div>
       <div className={style.block4}>
         <div className={style.block4__buttons}>
-          <DUnderline state={select} refs={{ refButtons1, refButtons2 }}>
-            <button ref={refButtons1} onClick={() => setSelect(0)}>
-              О товаре
-            </button>
-            <button ref={refButtons2} onClick={() => setSelect(1)}>
-              Отзывы покупателей
-            </button>
+          <DUnderline state={select} styleDiv={style.underline}>
+            <button onClick={() => setSelect(0)}>О товаре</button>
+            <button onClick={() => setSelect(1)}>Отзывы покупателей</button>
+            {user ? (
+              <button onClick={() => setSelect(2)}>Оставить отзыв</button>
+            ) : (
+              <></>
+            )}
           </DUnderline>
         </div>
-        {select === 0 && <About item={item}/>}
-        {select === 1 && <Reviews items={item} width={width} />}
+        {select === 0 && <About item={item} />}
+        {select === 1 && <Reviews item={item} width={width} user_id={user?.id}/>}
+        {select === 2 && user && <Feedback item={item} user_id={user.id} />}
       </div>
     </div>
   );

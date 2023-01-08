@@ -11,3 +11,6 @@ export const selectById = (id: number) => (state: RootState) =>
 
 export const selectAllProducts = (state: RootState) =>
   state.productsReducer.items;
+
+export const selectPages = (state: RootState) =>
+  state.productsReducer.pages

@@ -1,11 +1,9 @@
-from datetime import datetime
 from fastapi import APIRouter, Depends, Query, HTTPException, Response, Cookie
 from sqlalchemy.orm import Session
-from typing import Union
 from fastapi.encoders import jsonable_encoder
 from pydantic import validate_email
+from sqlalchemy import func
 
-# from fastapi_jwt_auth import AuthJWT
 
 import models
 import schemas
@@ -42,7 +40,7 @@ async def authorization(
 ):
 
     query_login = db.query(models.User.username, models.User.password, models.User.id).filter(
-        models.User.username == form_data.username).first()
+        models.User.email == form_data.email).first()
 
     if not query_login or not verify_password(form_data.password, query_login.password):
         raise HTTPException(status_code=400, detail={
@@ -156,11 +154,129 @@ async def logout(response: Response,):
     return {"Ok": 200}
 
 
+@router.get("/api/reviews", tags=["user"])
+async def add_reviews(
+    id: int = Query(..., description="product_id"),
+    user_id: int = Query(None),
+    db: Session = Depends(get_db)
+):
+    try:
+        def get_list_id(array, key):
+            new_list = []
+
+            for obj in array:
+                new_list.append(obj.__dict__[key])
+
+            return new_list
+
+        query_reviews = db.query(models.Reviews).filter(
+            models.Reviews.product_id == id).all()
+
+        query_user = db.query(models.User.username, models.User.id).filter(
+            models.User.id.in_(get_list_id(query_reviews, "user_id"))).all()
+
+        query_assessment = db.query(models.Assessment).filter(
+            models.Assessment.reviews_id.in_(get_list_id(query_reviews, "id")))
+
+        if (user_id):
+            query_likeIt = db.query(models.Assessment.likeIt, models.Assessment.reviews_id).filter(
+                models.Assessment.user_id == user_id)
+
+        reviews = []
+
+        for qr in query_reviews:
+            for qu in query_user:
+                if (qu["id"] == qr.__dict__["user_id"]):
+                    reviews.append(
+                        {**qr.__dict__, "username": qu["username"], "like": 0, "dislike": 0})
+
+        for re in reviews:
+            for qa in query_assessment:
+                if (qa.__dict__["reviews_id"] == re["id"]):
+                    if (qa.__dict__["likeIt"]):
+                        re["like"] += 1
+                    else:
+                        re["dislike"] += 1
+
+            if (user_id):
+                for ql in query_likeIt:
+                    if (ql["reviews_id"] == re["id"]):
+                        re["likeIt"] = ql["likeIt"]
+
+    except:
+        raise HTTPException(status_code=403, detail={
+            "details": ""})
+
+    return reviews
+
+
 @router.post("/api/reviews", tags=["user"])
 async def add_reviews(data: schemas.reviews, db: Session = Depends(get_db)):
 
-    db.add(models.Reviews(**jsonable_encoder(data)))
+    query_review = db.query(models.Reviews).filter(
+        models.Reviews.product_id == data.product_id,
+        models.Reviews.user_id == data.user_id).\
+        first()
+
+    if (not query_review):
+        db.add(models.Reviews(**jsonable_encoder(data)))
+        db.commit()
+
+    return {"Ok": 200}
+
+
+@router.get("/api/review", tags=["user"])
+async def add_reviews(product_id: int, user_id: int, db: Session = Depends(get_db)):
+
+    try:
+        query_review = db.query(models.Reviews).filter(
+            models.Reviews.product_id == product_id, models.Reviews.user_id == user_id).one()
+
+        query_assessment = db.query(models.Assessment).filter(
+            models.Assessment.reviews_id == query_review.__dict__["id"]).all()
+
+        likes = {"like": 0, "dislike": 0}
+        for qa in query_assessment:
+            if (qa.__dict__["likeIt"]):
+                likes["like"] += 1
+            else:
+                likes["dislike"] += 1
+
+    except:
+        raise HTTPException(status_code=403, detail={
+            "details": "Couldn't find a review"})
+
+    return {**query_review.__dict__, **likes}
+
+
+@router.get("/api/assessment", tags=["user"])
+async def add_reviews(reviews_id: int, user_id: int, db: Session = Depends(get_db)):
+
+    query_likeIt = db.query(models.Assessment.likeIt).filter(
+        models.Reviews.id == reviews_id, models.User.id == user_id)
+
+    return query_likeIt
+
+
+@router.post("/api/assessment", tags=["user"])
+async def add_reviews(data: schemas.assessment, db: Session = Depends(get_db)):
+
+    query_assessment = db.query(models.Assessment).\
+        filter(models.Assessment.user_id == data.user_id,
+               models.Assessment.reviews_id == data.reviews_id)
+
+    if (query_assessment.first()):
+        likeIt = query_assessment.first().__dict__["likeIt"]
+
+        if (likeIt == data.likeIt):
+            query_assessment.delete()
+        else:
+            query_assessment.update({"likeIt": data.likeIt})
+    else:
+        db.add(models.Assessment(**jsonable_encoder(data)))
+
     db.commit()
+
     return {"Ok": 200}
 
 
@@ -181,6 +297,13 @@ async def get_category(db: Session = Depends(get_db)):
     return item
 
 
+@router.get("/api/brand", tags=["user"])
+async def get_category(db: Session = Depends(get_db)):
+    brand = db.query(models.Brand).all()
+
+    return brand
+
+
 @router.get("/api/product", tags=["user"])
 async def get_product(
     left: int = Query(None, description="category nested sets"),
@@ -188,8 +311,14 @@ async def get_product(
     tree_id: int = Query(None, description="main category"),
     discount: int = Query(
         0, description="filter product.discount >= discount"),
+    limit: int = Query(None),
+    page: int = Query(None),
+    brand_id: str = Query(None),
+    priceL: int = Query(None),
+    priceR: int = Query(None),
     db: Session = Depends(get_db)
 ):
+
     def get_list_id(array):
         new_list = []
 
@@ -197,6 +326,11 @@ async def get_product(
             new_list.append(obj.id)
 
         return new_list
+
+    if not (limit and page):
+        offest = 0
+    else:
+        offest = (limit * page)
 
     if left and right and tree_id:
         query_category = db.query(models.Category.id).\
@@ -208,10 +342,24 @@ async def get_product(
     else:
         query_category = db.query(models.Category.id).all()
 
-    query_product = db.query(models.Product).\
+    countPage = db.query(models.Product).\
         filter(models.Product.category_id.in_(get_list_id(query_category)),
-               models.Product.discount >= discount).\
+               models.Product.discount >= discount).with_entities(func.count()).scalar()
+
+    productFilter = []
+    if (brand_id):
+        productFilter.append(models.Product.brand_id == brand_id)
+    if (priceL and priceR):
+        productFilter.append(models.Product.price >= (priceL or 0))
+        productFilter.append(models.Product.price <= (priceR or 0))
+
+    query_product = db.query(models.Product).\
+        filter(
+            models.Product.category_id.in_(get_list_id(query_category)),
+            models.Product.discount >= discount, *productFilter).\
         order_by(models.Product.id).\
+        limit(limit).\
+        offset(offest).\
         all()
 
     query_imgUrl = db.query(models.ProductImages.id,
@@ -225,10 +373,16 @@ async def get_product(
         filter(models.Reviews.product_id.in_(get_list_id(query_product))).\
         all()
 
+    query_brand = db.query(models.Brand.id, models.Brand.name).all()
+
     product_list = []
     for qp in query_product:
+        id_brand = qp.__dict__["brand_id"]
+
+        del qp.__dict__["brand_id"]
+
         product_list.append({**qp.__dict__, "imgUrl": [],
-                            "rating": {"value": 0, "count": 0}})
+                            "rating": {"value": 0, "count": 0}, "brand": {"id": id_brand}})
 
     for pl in product_list:
         for qi in query_imgUrl:
@@ -240,4 +394,8 @@ async def get_product(
                 pl["rating"]["value"] += qr.value
                 pl["rating"]["count"] += 1
 
-    return product_list
+        for qb in query_brand:
+            if pl["brand"]["id"] == qb.id:
+                pl["brand"] = {"id": pl["brand"]["id"], "name": qb.name}
+
+    return {"item": product_list, "pages": round(countPage / (limit or 1))}
