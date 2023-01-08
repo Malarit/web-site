@@ -59,8 +59,6 @@ const Home: React.FC = React.memo(() => {
   const productSale = useSelector(selectByDiscount);
   const product = useSelector(selectByNotDiscount);
 
-  console.log(product)
-
   return (
     <div className={appStyle.container}>
       <Slider imgUrl={sliderList} />

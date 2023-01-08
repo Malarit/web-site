@@ -26,7 +26,7 @@ const Product: React.FC<{ item: card }> = ({ item }) => {
   const user = useSelector(selectUser);
 
   const imgUrls = item.imgUrl.map((obj) => `http://127.0.0.1:5000` + obj.url);
-
+  
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

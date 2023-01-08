@@ -1,0 +1,55 @@
+.feedback {
+  max-width: 700px;
+  width: 100%;
+  height: max-content;
+  padding: 7px;
+  box-shadow: 0px 0px 1px rgb(0, 0, 0);
+  margin: 5px 0;
+  background-color: #fff;
+  div {
+    &:nth-of-type(1) {
+      display: flex;
+      align-items: center;
+      span:nth-of-type(1) {
+        margin-right: 10px;
+      }
+    }
+    &:nth-of-type(2) {
+      font-size: 15px;
+      margin: 5px 0;
+      word-wrap: break-word;
+      text-indent: 15px;
+    }
+    &:nth-of-type(3) {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      span {
+        &:nth-of-type(2) {
+          display: flex;
+        }
+      }
+      button {
+        width: 48px;
+        height: 33px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:nth-of-type(1) {
+          img {
+            transform: rotate(180deg);
+          }
+        }
+        img {
+          max-width: 100%;
+          margin: 0 8px;
+        }
+        span {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}

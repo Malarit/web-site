@@ -37,20 +37,32 @@ export const getReviews = async (
     const response = await axios.get("http://127.0.0.1:5000/api/reviews", {
       params: { id, user_id },
     });
-    state(
-      response.data as {
-        id: number;
-        product_id: number;
-        user_id: 1;
-        text: string;
-        value: number;
-        username: string;
-        date: string;
-        like: number;
-        dislike: number;
-        likeIt: boolean;
-      }[]
-    );
+    state(response.data);
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getReview = async (
+  state: React.SetStateAction<any>,
+  product_id: number,
+  user_id: number
+) => {
+  try {
+    const response = await axios.get("http://127.0.0.1:5000/api/review", {
+      params: { product_id, user_id },
+    });
+    state(response.data);
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteReview = async (product_id: number, user_id: number) => {
+  try {
+    const response = await axios.delete("http://127.0.0.1:5000/api/review", {
+      params: { product_id, user_id },
+    });
   } catch (error) {
     return error;
   }

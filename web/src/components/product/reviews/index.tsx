@@ -3,24 +3,14 @@ import { Rating } from "react-simple-star-rating";
 
 import { card } from "../../../store/slices/product/types";
 import { getReviews, postAssessment } from "../../../utils/fetch";
+import { reviews } from "../types";
+
+import FeedbackCard from "../feedbackCard";
 
 import style from "./index.module.scss";
 
 import like from "../../../assets/product/dislike.svg";
 import blueLike from "../../../assets/product/blue-dislike.svg";
-
-type reviews = {
-  id: number;
-  product_id: number;
-  user_id: 1;
-  text: string;
-  value: number;
-  username: string;
-  date: string;
-  like: number;
-  dislike: number;
-  likeIt: boolean;
-};
 
 const handleDragStart = (e: React.DragEvent<HTMLImageElement>) =>
   e.preventDefault();
@@ -89,38 +79,13 @@ const Reviews: React.FC<{
       </div>
       <div>
         {reviews.map((obj, id) => (
-
-          
-          <div key={id} className={style.feedback}>
-            <div>
-              <span>{obj.username}</span>
-              <Rating initialValue={obj?.value || 0} readonly size={13} />
-            </div>
-            <div>{obj.text}</div>
-            <div>
-              <span>{reviews[0].date.split("T")[0]}</span>
-              <span>
-                <button onClick={() => setAssessment(true, obj.id)}>
-                  <img
-                    src={getLikeImg(obj, false)}
-                    onDragStart={handleDragStart}
-                    alt=""
-                  />
-                  <span>{obj.like}</span>
-                </button>
-                <button onClick={() => setAssessment(false, obj.id)}>
-                  <img
-                    src={getLikeImg(obj, true)}
-                    onDragStart={handleDragStart}
-                    alt=""
-                  />
-                  <span>{obj.dislike}</span>
-                </button>
-              </span>
-            </div>
-          </div>
-
-
+          <FeedbackCard
+            key={id}
+            obj={obj}
+            like={getLikeImg(obj, false)}
+            dislike={getLikeImg(obj, true)}
+            setAssessment={(flag, id) => setAssessment(flag, id)}
+          />
         ))}
       </div>
     </div>

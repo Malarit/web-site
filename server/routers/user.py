@@ -249,6 +249,23 @@ async def add_reviews(product_id: int, user_id: int, db: Session = Depends(get_d
     return {**query_review.__dict__, **likes}
 
 
+@router.delete("/api/review", tags=["user"])
+async def add_reviews(product_id: int, user_id: int, db: Session = Depends(get_db)):
+
+    try:
+        query_review = db.query(models.Reviews).filter(
+            models.Reviews.product_id == product_id, models.Reviews.user_id == user_id).one()
+
+        db.delete(query_review)
+        db.commit()
+
+    except:
+        raise HTTPException(status_code=403, detail={
+            "details": "Couldn't find a review"})
+
+    return {"Ok", 200}
+
+
 @router.get("/api/assessment", tags=["user"])
 async def add_reviews(reviews_id: int, user_id: int, db: Session = Depends(get_db)):
 
