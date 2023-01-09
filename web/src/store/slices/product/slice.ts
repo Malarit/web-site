@@ -1,13 +1,23 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { card, ifetchProducts } from "./types";
 import axios from "axios";
+import qs from "qs";
 
 export const fetchProducts = createAsyncThunk<
   { item: card[]; pages: number },
   ifetchProducts
 >("products/fetchProductsStatus", async (props) => {
-  const { left, right, discount, tree_id, limit, page, price, brand_id } =
-    props;
+  const {
+    left,
+    right,
+    discount,
+    tree_id,
+    limit,
+    page,
+    price,
+    brand_id,
+    favourite,
+  } = props;
   return axios
     .get(`http://127.0.0.1:5000/api/product`, {
       params: {
@@ -20,7 +30,11 @@ export const fetchProducts = createAsyncThunk<
         priceL: price?.left,
         priceR: price?.right,
         brand_id,
+        favourite,
       },
+      paramsSerializer: {
+        indexes: null 
+      }
     })
     .then((response) => {
       return response.data;

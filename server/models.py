@@ -63,6 +63,7 @@ class User(Base):
     password = Column(String(128), nullable=False)
 
     reviews = relationship("Reviews", backref='user_reviews')
+    favourite = relationship("Favourite", backref='user_favourite')
 
 
 class Reviews(Base):
@@ -72,7 +73,6 @@ class Reviews(Base):
     text = Column(String(), nullable=True)
     value = Column(Integer(), nullable=False)
     date = Column(DateTime(timezone=True), default=datetime.datetime.today())
-
     product_id = Column(Integer(), ForeignKey('product.id'), nullable=False)
     user_id = Column(Integer(), ForeignKey('user.id'), nullable=False)
 
@@ -84,4 +84,13 @@ class Assessment(Base):
     likeIt = Column(Boolean(), nullable=False)
 
     reviews_id = Column(Integer(), ForeignKey('product.id'), nullable=False)
+    user_id = Column(Integer(), ForeignKey('user.id'), nullable=False)
+
+
+class Favourite(Base):
+    __tablename__ = "favourite"
+
+    id = Column(Integer(), primary_key=True)
+
+    product_id = Column(Integer(), ForeignKey('product.id'), nullable=False)
     user_id = Column(Integer(), ForeignKey('user.id'), nullable=False)

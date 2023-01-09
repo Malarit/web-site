@@ -13,6 +13,7 @@ import Basket from "./pages/basket";
 import Details from "./pages/details";
 import Catalog from "./pages/catalog";
 import Admin from "./pages/admin";
+import Favourite from "./pages/favourite";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ const App: React.FC = () => {
           <Route index element={<></>} />
           <Route path=":id/:title" element={<Details />} />
         </Route>
+        <Route path="/favourite" element={<Favourite />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>
       {window.location.pathname !== "/admin" && <Footer />}

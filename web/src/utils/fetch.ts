@@ -129,6 +129,18 @@ export const logout = async () => {
   }
 };
 
+export const postFavourite = async (product_id: number, user_id: number) => {
+  try {
+    const response = await axios.post("http://127.0.0.1:5000/api/favourite", {
+      product_id,
+      user_id,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const postCategory = (parent_id: number | null, name: string) => {
   axios.post("http://127.0.0.1:5000/api/admin/category", {
     name: name,

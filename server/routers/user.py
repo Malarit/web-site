@@ -4,7 +4,6 @@ from fastapi.encoders import jsonable_encoder
 from pydantic import validate_email
 from sqlalchemy import func
 
-
 import models
 import schemas
 from utils import (get_hashed_password, verify_password, create_access_token,
@@ -59,35 +58,51 @@ async def get_me(
     db: Session = Depends(get_db)
 ):
 
-    def get_user_id(id: int):
-        login = db.query(models.User.id, models.User.username).filter(
-            models.User.id == id).first()
+    try:
+        def get_user_id(id: int):
+            login = db.query(models.User.id, models.User.username).filter(
+                models.User.id == id).first()
 
-        if not login:
-            raise HTTPException(status_code=401, detail={
-                "details": "The user belonging to this token no logger exist"})
-        return login
+            if not login:
+                raise HTTPException(status_code=401, detail={
+                    "details": "The user belonging to this token no logger exist"})
+            return login
 
-    if access_token == None or refresh_token == None:
-        raise HTTPException(status_code=403, detail={
-            "details": "Could not validate credentials"})
+        def get_list_id(array, key):
+            new_list = []
 
-    token_access_data = decode_access_token(access_token)
+            for obj in array:
+                new_list.append(obj[f"{key}"])
 
-    if not token_access_data:
-        token_refresh_data = decode_refresh_token(refresh_token)
-        if not token_refresh_data:
+            return new_list
+
+        if access_token == None or refresh_token == None:
             raise HTTPException(status_code=403, detail={
-                "details": "Could not validate credentials or Token expired"})
+                "details": "Could not validate credentials"})
 
-        query_login = get_user_id(token_refresh_data["sub"])
+        token_access_data = decode_access_token(access_token)
 
-        set_cookie(response, query_login['id'])
+        if not token_access_data:
+            token_refresh_data = decode_refresh_token(refresh_token)
+            if not token_refresh_data:
+                raise HTTPException(status_code=403, detail={
+                    "details": "Could not validate credentials or Token expired"})
 
-    else:
-        query_login = get_user_id(token_access_data["sub"])
+            query_login = get_user_id(token_refresh_data["sub"])
 
-    return query_login
+            set_cookie(response, query_login['id'])
+
+        else:
+            query_login = get_user_id(token_access_data["sub"])
+
+        query_favourite = db.query(models.Favourite.product_id).filter(
+            models.Favourite.user_id == query_login['id']).all()
+
+    except:
+        raise HTTPException(status_code=403, detail={
+            "details": "Could not validate credentials or Token expired"})
+
+    return {**query_login, "favourite_product": get_list_id(query_favourite, "product_id")}
 
 
 @router.post("/api/registration", tags=["user"])
@@ -213,14 +228,19 @@ async def add_reviews(
 @router.post("/api/reviews", tags=["user"])
 async def add_reviews(data: schemas.reviews, db: Session = Depends(get_db)):
 
-    query_review = db.query(models.Reviews).filter(
-        models.Reviews.product_id == data.product_id,
-        models.Reviews.user_id == data.user_id).\
-        first()
+    try:
+        query_review = db.query(models.Reviews).filter(
+            models.Reviews.product_id == data.product_id,
+            models.Reviews.user_id == data.user_id).\
+            first()
 
-    if (not query_review):
-        db.add(models.Reviews(**jsonable_encoder(data)))
-        db.commit()
+        if (not query_review):
+            db.add(models.Reviews(**jsonable_encoder(data)))
+            db.commit()
+
+    except:
+        raise HTTPException(status_code=403, detail={
+            "details": "Couldn't add product"})
 
     return {"Ok": 200}
 
@@ -266,33 +286,29 @@ async def add_reviews(product_id: int, user_id: int, db: Session = Depends(get_d
     return {"Ok", 200}
 
 
-@router.get("/api/assessment", tags=["user"])
-async def add_reviews(reviews_id: int, user_id: int, db: Session = Depends(get_db)):
-
-    query_likeIt = db.query(models.Assessment.likeIt).filter(
-        models.Reviews.id == reviews_id, models.User.id == user_id)
-
-    return query_likeIt
-
-
 @router.post("/api/assessment", tags=["user"])
 async def add_reviews(data: schemas.assessment, db: Session = Depends(get_db)):
 
-    query_assessment = db.query(models.Assessment).\
-        filter(models.Assessment.user_id == data.user_id,
-               models.Assessment.reviews_id == data.reviews_id)
+    try:
+        query_assessment = db.query(models.Assessment).\
+            filter(models.Assessment.user_id == data.user_id,
+                   models.Assessment.reviews_id == data.reviews_id)
 
-    if (query_assessment.first()):
-        likeIt = query_assessment.first().__dict__["likeIt"]
+        if (query_assessment.first()):
+            likeIt = query_assessment.first().__dict__["likeIt"]
 
-        if (likeIt == data.likeIt):
-            query_assessment.delete()
+            if (likeIt == data.likeIt):
+                query_assessment.delete()
+            else:
+                query_assessment.update({"likeIt": data.likeIt})
         else:
-            query_assessment.update({"likeIt": data.likeIt})
-    else:
-        db.add(models.Assessment(**jsonable_encoder(data)))
+            db.add(models.Assessment(**jsonable_encoder(data)))
 
-    db.commit()
+        db.commit()
+
+    except:
+        raise HTTPException(status_code=403, detail={
+            "details": "Couldn't add assessment"})
 
     return {"Ok": 200}
 
@@ -333,9 +349,10 @@ async def get_product(
     brand_id: str = Query(None),
     priceL: int = Query(None),
     priceR: int = Query(None),
+    favourite: list[int] = Query(None),
     db: Session = Depends(get_db)
 ):
-
+    print(favourite)
     def get_list_id(array):
         new_list = []
 
@@ -369,6 +386,8 @@ async def get_product(
     if (priceL and priceR):
         productFilter.append(models.Product.price >= (priceL or 0))
         productFilter.append(models.Product.price <= (priceR or 0))
+    if (favourite):
+        productFilter.append(models.Product.id.in_(favourite))
 
     query_product = db.query(models.Product).\
         filter(
@@ -416,3 +435,24 @@ async def get_product(
                 pl["brand"] = {"id": pl["brand"]["id"], "name": qb.name}
 
     return {"item": product_list, "pages": round(countPage / (limit or 1))}
+
+
+@router.post("/api/favourite", tags=["user"])
+async def set_favourite(data: schemas.favourite, db: Session = Depends(get_db)):
+
+    try:
+        query_favourite = db.query(models.Favourite).filter(
+            models.Favourite.user_id == data.user_id, models.Favourite.product_id == data.product_id).first()
+
+        if query_favourite:
+            db.delete(query_favourite)
+        else:
+            db.add(models.Favourite(**jsonable_encoder(data)))
+
+        db.commit()
+
+    except (ValueError):
+        raise HTTPException(status_code=403, detail={
+            "details": "Couldn't add favourite"})
+
+    return {"Ok", 200}

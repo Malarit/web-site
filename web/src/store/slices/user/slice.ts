@@ -1,10 +1,10 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { user } from "./types";
 
 export const fetchUser = createAsyncThunk<user>(
   "user/fetchUserStatus",
-  async (token) => {
+  async () => {
     return axios
       .get(`http://127.0.0.1:5000/api/me`, {
         withCredentials: true,
@@ -22,7 +22,19 @@ const initialState: { user: user } = {
 export const UserSlice = createSlice({
   name: "User",
   initialState,
-  reducers: {},
+  reducers: {
+    setFavourite: (state, action: PayloadAction<number>) => {
+      if (state.user) {
+        state.user.favourite_product.includes(action.payload)
+          ? (state.user.favourite_product = state.user.favourite_product.filter(
+              (item) => {
+                return item != action.payload;
+              }
+            ))
+          : state.user.favourite_product.push(action.payload);
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUser.fulfilled, (state, action) => {
@@ -34,6 +46,6 @@ export const UserSlice = createSlice({
   },
 });
 
-export const {} = UserSlice.actions;
+export const { setFavourite } = UserSlice.actions;
 
 export default UserSlice.reducer;

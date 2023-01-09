@@ -58,3 +58,8 @@ class assessment(BaseModel):
     likeIt: bool
     reviews_id: int
     user_id: int
+
+
+class favourite(BaseModel):
+    user_id: int
+    product_id: int

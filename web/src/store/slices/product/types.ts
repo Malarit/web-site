@@ -21,4 +21,5 @@ export interface ifetchProducts {
   page?: number;
   price?: { left: number; right: number };
   brand_id?: number;
+  favourite?: number[];
 }

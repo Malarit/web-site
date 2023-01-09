@@ -85,7 +85,7 @@ const Header: React.FC = () => {
 
         <div className={style.icons}>
           <div>
-            <Link to="/basket">
+            <Link to="/favourite">
               <img src={heart} alt="" />
             </Link>
           </div>
