@@ -29,18 +29,17 @@ const Catalog: React.FC = () => {
 
   React.useEffect(() => {
     const ca = category.flat().find((obj) => obj.id == allFilter?.category);
-    dispatch<any>(
-      fetchProducts({
-        discount: 0,
-        page: page,
-        limit: 10,
-        price: allFilter?.price,
-        brand_id: allFilter?.brand,
-        left: ca?.left,
-        right: ca?.right,
-        tree_id: ca?.tree_id,
-      })
-    );
+      dispatch<any>(
+        fetchProducts({
+          page: page,
+          limit: 10,
+          price: allFilter?.price,
+          brand_id: allFilter?.brand,
+          left: ca?.left,
+          right: ca?.right,
+          tree_id: ca?.tree_id,
+        })
+      );
   }, [page, allFilter, category]);
 
   return (

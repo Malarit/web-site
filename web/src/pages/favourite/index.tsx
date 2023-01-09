@@ -17,7 +17,7 @@ const Favourite: React.FC = () => {
   React.useEffect(() => {
     if (refFlag.current && user && user.favourite_product.length != 0) {
       dispatch<any>(
-        fetchProducts({ discount: 0, favourite: user?.favourite_product })
+        fetchProducts({ favourite: user?.favourite_product })
       );
       refFlag.current = false;
     }
@@ -25,12 +25,22 @@ const Favourite: React.FC = () => {
 
   const product = useSelector(selectAllProducts);
 
+  const getJSX = (): JSX.Element => {
+    if (!user) return <>Вам нужно войти!</>;
+    else if (user.favourite_product.length == 0)
+      return <>Вы не добавили ни одного продукта в избранное</>;
+    return <></>;
+  };
+
   return (
     <div className={style.root}>
       <div className={appStyle.container}>
-        {product.map((item) => (
-          <Card card={item} />
-        ))}
+        <div className={style.card}>
+          {user && refFlag.current == false &&
+            user.favourite_product.length != 0 &&
+            product.map((item) => <Card key={item.id} card={item} />)}
+        </div>
+        <div className={style.block}>{getJSX()}</div>
       </div>
     </div>
   );

@@ -159,8 +159,203 @@ async def update_product(
 
 
 @router.delete("/api/admin/product/image", tags=["admin"])
-async def update_product(id: int, db: Session = Depends(get_db)):
+async def delete_product(id: int, db: Session = Depends(get_db)):
     i = db.query(models.ProductImages).filter(
         models.ProductImages.id == id).one()
     db.delete(i)
     db.commit()
+
+
+@router.post("/api/admin/topCategories", tags=["admin"])
+async def post_topCategories(
+    category_id: str = Body(...),
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+
+    isImg, imgtype = file.content_type.split('/')
+
+    if isImg != "image":
+        raise HTTPException(
+            status_code=422, detail="file is not a image")
+
+    else:
+        art = hashlib.md5(
+            (str(datetime.now()) + file.filename).strip().encode('utf-8'))
+
+        file_location = f"./media/banners/{art.hexdigest()}.{imgtype}"
+
+        with open(file_location, "wb+") as file_object:
+            file_object.write(file.file.read())
+
+        db.add(models.TopCategories(
+            url="/api" + file_location[1:], category_id=category_id))
+
+    db.commit()
+
+    return {"Ok", 200}
+
+
+@router.get("/api/admin/topCategories", tags=["admin"])
+async def get_topCategories(db: Session = Depends(get_db)):
+
+    query_banners = db.query(models.TopCategories).all()
+
+    return query_banners
+
+
+@router.delete("/api/admin/topCategories", tags=["admin"])
+async def delete_TopCategories(id: int, db: Session = Depends(get_db)):
+
+    if (not id):
+        raise HTTPException(status_code=403, detail={
+            "details": "Couldn't"})
+
+    query_topCategories = db.query(models.TopCategories).filter(
+        models.TopCategories.id == id).one()
+
+    url = query_topCategories.__dict__["url"][4:]
+    os.remove(os.getcwd() + f"{url}".replace('/', '\\'))
+
+    db.delete(query_topCategories)
+    db.commit()
+
+    return {"Ok", 200}
+
+
+@router.post("/api/admin/banners", tags=["admin"])
+async def post_banners(
+    name: str = Body(...),
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+
+    isImg, imgtype = file.content_type.split('/')
+
+    if isImg != "image":
+        raise HTTPException(
+            status_code=422, detail="file is not a image")
+
+    else:
+        art = hashlib.md5(
+            (str(datetime.now()) + file.filename).strip().encode('utf-8'))
+
+        file_location = f"./media/banners/{art.hexdigest()}.{imgtype}"
+
+        with open(file_location, "wb+") as file_object:
+            file_object.write(file.file.read())
+
+        db.add(models.Banners(
+            url="/api" + file_location[1:], name=name))
+
+    db.commit()
+
+    return {"Ok", 200}
+
+
+@router.get("/api/admin/banners", tags=["admin"])
+async def get_banners(db: Session = Depends(get_db)):
+
+    query_banners = db.query(models.Banners).all()
+
+    return query_banners
+
+
+@router.delete("/api/admin/banners", tags=["admin"])
+async def delete_banners(id: int, db: Session = Depends(get_db)):
+
+    if (not id):
+        raise HTTPException(status_code=403, detail={
+            "details": "Couldn't"})
+
+    query_banners = db.query(models.Banners).filter(
+        models.Banners.id == id).one()
+
+    url = query_banners.__dict__["url"][4:]
+    os.remove(os.getcwd() + f"{url}".replace('/', '\\'))
+
+    db.delete(query_banners)
+    db.commit()
+
+    return {"Ok", 200}
+
+
+@router.post("/api/admin/bannersBetween", tags=["admin"])
+async def post_banners(
+    category_id: str = Body(...),
+    files: list[UploadFile] = File(...),
+    db: Session = Depends(get_db)
+):
+
+    if len(files) == 0:
+        raise HTTPException(
+            status_code=422, detail="where is the image?")
+
+    db.add(models.BannersBetween(category_id=category_id))
+    db.commit()
+
+    last_id = db.query(models.BannersBetween.id).\
+        order_by(models.BannersBetween.id.desc()).first().id
+
+    for file in files:
+
+        isImg, imgtype = file.content_type.split('/')
+
+        if isImg != "image":
+            raise HTTPException(
+                status_code=422, detail="file is not a image")
+
+        else:
+            art = hashlib.md5(
+                (str(datetime.now()) + file.filename).strip().encode('utf-8'))
+
+            file_location = f"./media/banners/{art.hexdigest()}.{imgtype}"
+
+            with open(file_location, "wb+") as file_object:
+                file_object.write(file.file.read())
+
+            db.add(models.BannersBetweenImages(
+                url="/api" + file_location[1:], bannersBetween_id=last_id))
+
+    db.commit()
+
+    return {"Ok", 200}
+
+
+@router.get("/api/admin/bannersBetween", tags=["admin"])
+async def get_banners(db: Session = Depends(get_db)):
+
+    query_bannersBetween = db.query(models.BannersBetween).all()
+    query_img = db.query(models.BannersBetweenImages).all()
+
+    bannersBetween = []
+
+    for qb in query_bannersBetween:
+        bannersBetween.append({**qb.__dict__, "url": []})
+
+    for b in bannersBetween:
+        for qi in query_img:
+            if (qi.__dict__["bannersBetween_id"] == b["id"]):
+                b["url"].append(qi.__dict__["url"])
+
+    return bannersBetween
+
+
+@router.delete("/api/admin/bannersBetween", tags=["admin"])
+async def delete_banners(id: int, db: Session = Depends(get_db)):
+
+    query_bannersBetween = db.query(models.BannersBetween).filter(
+        models.BannersBetween.id == id).one()
+
+    query_img = db.query(models.BannersBetweenImages).filter(
+        models.BannersBetweenImages.bannersBetween_id == query_bannersBetween.id).all()
+
+    for qp in query_img:
+        url = qp.__dict__["url"][4:]
+        os.remove(os.getcwd() + f"{url}".replace('/', '\\'))
+        db.delete(qp)
+
+    db.delete(query_bannersBetween)
+    db.commit()
+
+    return {"Ok", 200}

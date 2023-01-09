@@ -49,6 +49,10 @@ class Category(Base, BaseNestedSets):
     visible = Column(Boolean)
 
     product = relationship('Product', backref='category_product')
+    topCategories = relationship(
+        'TopCategories', backref='category_topCategories')
+    bannersBetween = relationship(
+        'BannersBetween', backref='category_bannersBetween')
 
     def __repr__(self):
         return "<Node (%s)>" % self.id
@@ -94,3 +98,39 @@ class Favourite(Base):
 
     product_id = Column(Integer(), ForeignKey('product.id'), nullable=False)
     user_id = Column(Integer(), ForeignKey('user.id'), nullable=False)
+
+
+class Banners(Base):
+    __tablename__ = "banners"
+
+    id = Column(Integer(), primary_key=True)
+    name = Column(String(),  nullable=False)
+    url = Column(String(),  nullable=False)
+
+
+class TopCategories(Base):
+    __tablename__ = "topCategories"
+
+    id = Column(Integer(), primary_key=True)
+    url = Column(String(),  nullable=False)
+    category_id = Column(Integer(), ForeignKey('category.id'), nullable=False)
+
+
+class BannersBetween(Base):
+    __tablename__ = "bannersBetween"
+
+    id = Column(Integer(), primary_key=True)
+    category_id = Column(Integer(), ForeignKey('category.id'), nullable=False)
+
+    bannersBetween = relationship(
+        'BannersBetweenImages', backref='BannersBetween_images')
+
+
+class BannersBetweenImages(Base):
+    __tablename__ = "BannersBetweenImages"
+
+    id = Column(Integer(), primary_key=True)
+    url = Column(String(),  nullable=False)
+
+    bannersBetween_id = Column(
+        Integer(), ForeignKey('bannersBetween.id'), nullable=False)

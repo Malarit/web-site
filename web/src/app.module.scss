@@ -11,6 +11,7 @@ $maxWPhone: 600px;
   max-width: 1420px;
   padding: 0 20px;
   margin: 0 auto;
+  height: 100%;
   @media (max-width: $maxWTable) {
     max-width: 1000px;
     padding: 0 10px;

@@ -16,10 +16,11 @@ export interface ifetchProducts {
   left?: number;
   right?: number;
   tree_id?: number;
-  discount: number;
+  discount?: number;
   limit?: number;
   page?: number;
   price?: { left: number; right: number };
   brand_id?: number;
   favourite?: number[];
+  product_id?: number;
 }

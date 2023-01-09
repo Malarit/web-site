@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Query, HTTPException, Response, Cookie
 from sqlalchemy.orm import Session
 from fastapi.encoders import jsonable_encoder
 from pydantic import validate_email
-from sqlalchemy import func
+from sqlalchemy import func, or_
 
 import models
 import schemas
@@ -343,16 +343,16 @@ async def get_product(
     right: int = Query(None, description="category nested sets"),
     tree_id: int = Query(None, description="main category"),
     discount: int = Query(
-        0, description="filter product.discount >= discount"),
+        None, description="filter product.discount >= discount"),
     limit: int = Query(None),
     page: int = Query(None),
     brand_id: str = Query(None),
     priceL: int = Query(None),
     priceR: int = Query(None),
     favourite: list[int] = Query(None),
+    product_id: int = Query(None),
     db: Session = Depends(get_db)
 ):
-    print(favourite)
     def get_list_id(array):
         new_list = []
 
@@ -376,11 +376,10 @@ async def get_product(
     else:
         query_category = db.query(models.Category.id).all()
 
-    countPage = db.query(models.Product).\
-        filter(models.Product.category_id.in_(get_list_id(query_category)),
-               models.Product.discount >= discount).with_entities(func.count()).scalar()
-
     productFilter = []
+
+    if (product_id):
+        productFilter.append(models.Product.id == product_id)
     if (brand_id):
         productFilter.append(models.Product.brand_id == brand_id)
     if (priceL and priceR):
@@ -388,11 +387,20 @@ async def get_product(
         productFilter.append(models.Product.price <= (priceR or 0))
     if (favourite):
         productFilter.append(models.Product.id.in_(favourite))
+    if (discount != 0 and discount != None):
+        productFilter.append(models.Product.discount >= discount)
+    elif (discount == None):
+        productFilter.append(models.Product.discount >= 0)
+    elif (discount == 0):
+        productFilter.append(
+            or_(models.Product.discount == 0, models.Product.discount == None))
+
+    countPage = db.query(models.Product).\
+        filter(models.Product.category_id.in_(get_list_id(query_category)),
+               *productFilter).with_entities(func.count()).scalar()
 
     query_product = db.query(models.Product).\
-        filter(
-            models.Product.category_id.in_(get_list_id(query_category)),
-            models.Product.discount >= discount, *productFilter).\
+        filter(models.Product.category_id.in_(get_list_id(query_category)), *productFilter).\
         order_by(models.Product.id).\
         limit(limit).\
         offset(offest).\

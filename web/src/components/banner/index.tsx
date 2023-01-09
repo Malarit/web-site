@@ -1,20 +1,32 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import { useWindowDimensions } from "../../utils/getWindowSize";
+import { selectSubCategory } from "../../store/slices/category/selectors";
 
 import style from "./index.module.scss";
 
-import { useWindowDimensions } from "../../utils/getWindowSize";
-
-const Banner: React.FC<{ imgUrlTable: string; imgUrlPhone: string }> = ({
-  imgUrlTable,
-  imgUrlPhone,
-}) => {
+const Banner: React.FC<{
+  id: number;
+  url: string[];
+  category_id?: number;
+}> = ({ id, url, category_id }) => {
   const { width } = useWindowDimensions();
+
+  const getImg = () => {
+    if (!Array.isArray(url)) return "";
+
+    return width > 1000
+      ? "http://127.0.0.1:5000" + (url[0] || "")
+      : "http://127.0.0.1:5000" + (url[1] || "");
+  };
 
   return (
     <div className={style.root}>
-      <a href="">
-        <img src={width > 1000 ? imgUrlTable : imgUrlPhone} alt="" />
-      </a>
+      <Link to={`/catalog?category=${category_id}`}>
+        <img src={getImg()} alt="" />
+      </Link>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import Purchases from "../components/purchases";
 
 import appStyle from "../app.module.scss";
 
-const Basket: React.FC = () => {
+const Cart: React.FC = () => {
   return (
     <div className={appStyle.container}>
       <Purchases />
@@ -12,4 +12,4 @@ const Basket: React.FC = () => {
   );
 };
 
-export default Basket;
+export default Cart;

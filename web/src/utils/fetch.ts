@@ -183,3 +183,96 @@ export const deleteProductImg = (id: number) => {
     },
   });
 };
+
+export const postBanners = (formData: any) => {
+  axios.post("http://127.0.0.1:5000/api/admin/banners", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+
+export const getBanners = async (state: React.SetStateAction<any>) => {
+  try {
+    const response = await axios.get("http://127.0.0.1:5000/api/admin/banners");
+    state(response.data);
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteBanners = async (id: number) => {
+  try {
+    const response = await axios.delete(
+      "http://127.0.0.1:5000/api/admin/banners",
+      {
+        params: {
+          id,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const postTopCategories = (formData: any) => {
+  axios.post("http://127.0.0.1:5000/api/admin/topCategories", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+
+export const getTopCategories = async (state: React.SetStateAction<any>) => {
+  try {
+    const response = await axios.get("http://127.0.0.1:5000/api/admin/topCategories");
+    state(response.data);
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteTopCategories = async (id: number) => {
+  try {
+    const response = await axios.delete(
+      "http://127.0.0.1:5000/api/admin/topCategories",
+      {
+        params: {
+          id,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const postBannersBetween = (formData: any) => {
+  axios.post("http://127.0.0.1:5000/api/admin/bannersBetween", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+
+export const getBannersBetween = async (state: React.SetStateAction<any>) => {
+  try {
+    const response = await axios.get("http://127.0.0.1:5000/api/admin/bannersBetween");
+    state(response.data);
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteBannersBetween = async (id: number) => {
+  try {
+    const response = await axios.delete(
+      "http://127.0.0.1:5000/api/admin/bannersBetween",
+      {
+        params: {
+          id,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    return error;
+  }
+};

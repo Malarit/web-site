@@ -9,7 +9,7 @@ import { fetchUser } from "./store/slices/user/slice";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import Home from "./pages/home";
-import Basket from "./pages/basket";
+import Basket from "./pages/Cart";
 import Details from "./pages/details";
 import Catalog from "./pages/catalog";
 import Admin from "./pages/admin";

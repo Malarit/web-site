@@ -98,7 +98,6 @@ const ViewProduct: React.FC<{
   const deleteImgState = (obj: File) => {
     setAddFile((current) => current.filter((item) => item !== obj));
   };
-
   return (
     <div className={style.root}>
       <div className={style.img}>

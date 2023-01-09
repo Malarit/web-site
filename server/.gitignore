@@ -1,4 +1,5 @@
 #server
 /venv
 **/__pycache__
-/media/product
+/media/product/*
+/media/banners/*

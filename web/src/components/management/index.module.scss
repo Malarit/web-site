@@ -1,7 +1,14 @@
 .root {
-  display: flex;
   margin-top: 20px;
   height: 90vh;
+  & > div {
+    display: flex;
+    height: 100%;
+  }
+  button {
+    margin-bottom: 10px;
+    width: auto;
+  }
 }
 .categories {
   width: 400px;

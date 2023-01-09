@@ -28,7 +28,7 @@ const ProfuctView: React.FC<{ setPage: React.SetStateAction<any> }> = ({
       <div className={style.product}>
         {item.map((obj) => (
           <div>
-            <Card card={obj} />
+            <Card key={obj.id} card={obj} />
           </div>
         ))}
       </div>

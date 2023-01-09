@@ -17,6 +17,7 @@ export const fetchProducts = createAsyncThunk<
     price,
     brand_id,
     favourite,
+    product_id,
   } = props;
   return axios
     .get(`http://127.0.0.1:5000/api/product`, {
@@ -31,10 +32,11 @@ export const fetchProducts = createAsyncThunk<
         priceR: price?.right,
         brand_id,
         favourite,
+        product_id,
       },
       paramsSerializer: {
-        indexes: null 
-      }
+        indexes: null,
+      },
     })
     .then((response) => {
       return response.data;
@@ -51,10 +53,15 @@ export const productsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchProducts.fulfilled, (state, action) => {
-      state.items = action.payload.item;
-      state.pages = action.payload.pages;
-    });
+    builder
+      .addCase(fetchProducts.pending, (state, action) => {
+        state.items = [];
+        state.pages = 0;
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.items = action.payload.item;
+        state.pages = action.payload.pages;
+      });
   },
 });
 

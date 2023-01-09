@@ -1,15 +1,18 @@
 import React from "react";
 import Sticky from "react-stickynode";
 import cn from "classnames";
+import { useSelector } from "react-redux";
 
 import { card } from "../../../store/slices/product/types";
+import { selectCountCard } from "../../../store/slices/basket/selectors";
+import { basket } from "../../../store/slices/basket/types";
 
 import Button from "../button";
 
 import style from "./index.module.scss";
 
 type aside = {
-  items: card[];
+  items: basket[];
   width: number;
   totalPrice: number;
   active: boolean;
@@ -20,6 +23,7 @@ type aside = {
 
 const Aside: React.FC<aside> = (props) => {
   const { items, width, totalPrice, active, setActive, enabled, ref } = props;
+
   return (
     <Sticky ref={ref} enabled={width < 1000 ? true : !enabled} innerZ={10}>
       <aside
@@ -41,17 +45,15 @@ const Aside: React.FC<aside> = (props) => {
                 <li key={obj.id}>
                   {obj.title}
                   <div>
-                    {/* <span>x{obj.count}</span>
-                    <span>{obj.price * (obj.count || 1)} ₽</span> */}
-                    <span>x{}</span>
-                    <span>{obj.price } ₽</span>
+                    <span>x{obj.count}</span>
+                    <span>{obj.price * (obj.count || 1)} ₽</span>
                   </div>
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            Итого: <span>{totalPrice},00 ₽</span>
+            Итого: <span>{Math.round(totalPrice)},00 ₽</span>
           </div>
           <Button />
         </div>
