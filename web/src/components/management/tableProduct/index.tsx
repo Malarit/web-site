@@ -38,7 +38,7 @@ const TableProduct: React.FC<{ activeCategory: categoryType | undefined }> = ({
   const updateProduct = () => {
     if (activeCategory) {
       const { left, right, tree_id } = activeCategory;
-      dispatch<any>(fetchProducts({ left, right, tree_id, discount: 0 }));
+      dispatch<any>(fetchProducts({ left, right, tree_id }));
     }
   };
 
@@ -46,7 +46,7 @@ const TableProduct: React.FC<{ activeCategory: categoryType | undefined }> = ({
     if (activeCategory) {
       const { left, right, tree_id } = activeCategory;
       deleteProduct(row.id);
-      dispatch<any>(fetchProducts({ left, right, tree_id, discount: 0 }));
+      dispatch<any>(fetchProducts({ left, right, tree_id }));
     }
   };
 

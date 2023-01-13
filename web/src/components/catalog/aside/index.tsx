@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { getBrands } from "../../../utils/fetch";
 import { categoryType } from "../../../store/slices/category/types";
 
-import Tree from "../../category/tree";
 import Slider from "./slider";
 
 import style from "./index.module.scss";
@@ -21,16 +20,14 @@ const initialRange = {
 const Aside: React.FC<{
   state: React.SetStateAction<any>;
   getFilters: React.SetStateAction<any>;
-  category: categoryType[][];
+  category: categoryType[];
 }> = ({ state, getFilters, category }) => {
   const navigate = useNavigate();
   const [brands, setBrands] = React.useState<{ id: number; name: string }[]>();
-  const [brandId, setBrandId] = React.useState(0);
+  const [brandId, setBrandId] = React.useState<number>();
   const [onCategory, setOnCategory] = React.useState<number>(0);
   const [price, setPrice] = React.useState<range>(initialRange);
   const [urlPrice, setUrlPrice] = React.useState<range>(initialRange);
-  const [activeUl, setActiveUl] = React.useState<number[]>([]);
-  const [urlActiveUl, setUrlActiveUl] = React.useState<number[]>([]);
 
   React.useEffect(() => {
     getBrands(setBrands);
@@ -49,13 +46,11 @@ const Aside: React.FC<{
       setBrandId(_params.brand);
       setOnCategory(_params.category);
       setUrlPrice(_params.price);
-      setUrlActiveUl(_params?.activeUl?.map((item) => Number.parseInt(item)));
       getFilters({
         category: _params.category,
         brand: _params.brand,
         price: _params.price,
       });
-
     }
   }, []);
 
@@ -65,13 +60,9 @@ const Aside: React.FC<{
       brand: brandId,
       price: price,
     };
-    const queryString = qs.stringify({ ...data, activeUl: activeUl });
+    const queryString = qs.stringify({ ...data });
     navigate("?" + queryString);
     getFilters(data);
-  };
-
-  const onTree = (e: categoryType) => {
-    if (e.left + 1 == e.right) setOnCategory(e.id);
   };
 
   return (
@@ -84,13 +75,14 @@ const Aside: React.FC<{
         </div>
       </div>
       <div className={style.tree}>
-        <Tree
-          category={category}
-          getChildCategory={(e) => onTree(e)}
-          activeLi={onCategory}
-          getActiveUl={setActiveUl}
-          _setActiveUl={urlActiveUl}
-        />
+        {category.map((obj) => (
+          <div
+            onClick={() => setOnCategory(obj.id)}
+            className={cn({ [style.active]: obj.id == onCategory })}
+          >
+            {obj.name}
+          </div>
+        ))}
       </div>
       <div>Цена</div>
       <div className={style.slider}>

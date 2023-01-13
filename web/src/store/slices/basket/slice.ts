@@ -38,9 +38,13 @@ export const basketSlice = createSlice({
 
       state.totalPrice = calcTotalPrice(state);
     },
+    removeAll: (state) => {
+      state.items = []
+      state.totalPrice = 0
+    },
   },
 });
 
-export const { addItem, removeItem } = basketSlice.actions;
+export const { addItem, removeItem, removeAll } = basketSlice.actions;
 
 export default basketSlice.reducer;

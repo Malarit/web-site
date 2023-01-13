@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
-
+from utils import create_folder
 from routers import admin, user
 
 app = FastAPI()
@@ -29,4 +29,9 @@ app.include_router(admin.router)
 
 
 if __name__ == "__main__":
+    create_folder(r"./", "media")
+    create_folder(r"./media/", "banners")
+    create_folder(r"./media/", "product")
+    create_folder(r"./media/", "category")
+
     uvicorn.run("main:app", port=5000, log_level="info", reload=True)

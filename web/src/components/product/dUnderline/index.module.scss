@@ -4,6 +4,11 @@
   display: inherit;
   flex-direction: inherit;
   position: relative;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    height: 0px;
+  }
+
 }
 .wrapper {
   width: min-content;

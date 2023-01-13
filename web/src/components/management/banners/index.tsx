@@ -9,16 +9,24 @@ import style from "./index.module.scss";
 
 const Banners: React.FC<{
   title: string;
-  getBanners: (state: React.SetStateAction<any>) => {};
+  getBanners: (state: React.SetStateAction<any>) => void;
   postBanners: (formData: any) => {};
   deleteBanners: (id: number) => {};
   files?: boolean;
-  category?: categoryType;
-}> = ({ getBanners, postBanners, deleteBanners, title, category, files }) => {
+  category?: boolean;
+  checkImgCategory?: boolean;
+}> = ({
+  getBanners,
+  postBanners,
+  deleteBanners,
+  title,
+  category,
+  files,
+  checkImgCategory,
+}) => {
   const [active, setActive] = React.useState(false);
   const refFlag = React.useRef<boolean>(true);
   const [topCategory, setTopCategory] = React.useState(0);
-  const [filesState, setFilesState] = React.useState<any>([]);
   const [banners, setBanners] = React.useState<
     {
       id: number;
@@ -76,7 +84,11 @@ const Banners: React.FC<{
                 <Popup
                   placeholder="Категории"
                   setPopupId={setTopCategory}
-                  items={subCategory}
+                  items={
+                    checkImgCategory
+                      ? subCategory.filter((obj) => obj.url == undefined)
+                      : subCategory
+                  }
                 />
               </div>
             ) : (
@@ -92,7 +104,7 @@ const Banners: React.FC<{
           <thead>
             <tr>
               <th>Изображения</th>
-              <th>Название</th>
+              <th>{category ? "Категория" : "Название"}</th>
               <th>Удалить</th>
             </tr>
           </thead>

@@ -26,6 +26,11 @@ class registration(user):
         return v
 
 
+class admin(user):
+    isAdmin: bool
+    username: str
+
+
 class reviews(BaseModel):
     text: str
     product_id: int
@@ -63,3 +68,18 @@ class assessment(BaseModel):
 class favourite(BaseModel):
     user_id: int
     product_id: int
+
+
+class product_id(BaseModel):
+    id: int
+    count: int
+
+
+class Order(BaseModel):
+    user_id: int
+    street: str
+    house: str
+    flat: str
+    phoneNumber: str
+    product_id: list[product_id]
+    totalPrice: int

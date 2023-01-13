@@ -1,5 +1,5 @@
 import React from "react";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { subCategory } from "../../pages/home";
@@ -18,7 +18,9 @@ const Category: React.FC<{ title: string; card: subCategory }> = React.memo(
           {card.map((item, id) => (
             <div key={id} className={style.card}>
               <Link to={`/catalog?category=${item.category_id}`}>
-                <span>{category.find((obj) => obj.id == item.category_id)?.name}</span>
+                <span>
+                  {category.find((obj) => obj.id === item.category_id)?.name}
+                </span>
                 <img src={"http://127.0.0.1:5000" + item.url} alt="" />
               </Link>
             </div>

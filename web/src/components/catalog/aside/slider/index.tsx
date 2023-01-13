@@ -50,7 +50,6 @@ const Slider: React.FC<{
 
     if (value > maxValue) value = maxValue;
     if (Number.isNaN(value)) value = minValue;
-    console.log( rangeLeft )
 
     setRangeRight(value);
     if (value - rangeLeft <= minGap) {

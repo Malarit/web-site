@@ -59,7 +59,7 @@ const GetTree: React.FC<{
 
   const requestProduct = (item: categoryType) => {
     const { left, right, tree_id } = item;
-    dispatch<any>(fetchProducts({ left, right, tree_id, discount: 0 }));
+    dispatch<any>(fetchProducts({ left, right, tree_id }));
     setActiveCategory(item);
   };
 

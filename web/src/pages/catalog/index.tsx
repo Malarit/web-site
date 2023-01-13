@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { fetchProducts } from "../../store/slices/product/slice";
 import { useWindowDimensions } from "../../utils/getWindowSize";
-import { selectAllCategory } from "../../store/slices/category/selectors";
+import {
+  selectAllCategory,
+  selectSubCategory,
+} from "../../store/slices/category/selectors";
 
 import Aside from "../../components/catalog/aside";
 import ProfuctView from "../../components/catalog/ProfuctView";
@@ -14,7 +17,7 @@ import appStyle from "../../app.module.scss";
 
 const Catalog: React.FC = () => {
   const dispatch = useDispatch();
-  const category = useSelector(selectAllCategory);
+  const category = useSelector(selectSubCategory);
   const { width } = useWindowDimensions();
   const [activeFilter, setActiveFilter] = React.useState(false);
   const [allFilter, setAllFilter] = React.useState<{
@@ -28,19 +31,20 @@ const Catalog: React.FC = () => {
   const [page, setPage] = React.useState(0);
 
   React.useEffect(() => {
-    const ca = category.flat().find((obj) => obj.id == allFilter?.category);
-      dispatch<any>(
-        fetchProducts({
-          page: page,
-          limit: 10,
-          price: allFilter?.price,
-          brand_id: allFilter?.brand,
-          left: ca?.left,
-          right: ca?.right,
-          tree_id: ca?.tree_id,
-        })
-      );
-  }, [page, allFilter, category]);
+    window.scroll(0, 0);
+    const ca = category.find((obj) => obj.id == allFilter?.category);
+    dispatch<any>(
+      fetchProducts({
+        page: page,
+        limit: 10,
+        price: allFilter?.price,
+        brand_id: allFilter?.brand,
+        left: ca?.left,
+        right: ca?.right,
+        tree_id: ca?.tree_id,
+      })
+    );
+  }, [page, allFilter]);
 
   return (
     <div className={appStyle.container}>

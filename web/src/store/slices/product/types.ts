@@ -23,4 +23,6 @@ export interface ifetchProducts {
   brand_id?: number;
   favourite?: number[];
   product_id?: number;
+  text?: string;
+  product_id_list?: number[];
 }

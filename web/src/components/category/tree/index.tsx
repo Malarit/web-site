@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { categoryType } from "../../../store/slices/category/types";
 import { drawNestedSetsTree } from "../../../utils/drawNestedSetsTree";
@@ -32,17 +33,35 @@ const Tree: React.FC<{
 
   const ListItem: React.FC<{ item: categoryType }> = ({ item }) => {
     return (
-      <li
-        style={{ color: activeLi == item.id ? "#ff00d9" : "" }}
-        key={item.id}
-        onClick={() => {
-          onClickLi(item);
-          getChildCategory!(item);
-        }}
-      >
-        {item.name}
-        {parents?.includes(item.id) && <span>{">"}</span>}
-      </li>
+      <>
+        {parents?.includes(item.id) ? (
+            <li
+              style={{ color: activeLi == item.id ? "#ff00d9" : "" }}
+              key={item.id}
+              onClick={() => {
+                onClickLi(item);
+                getChildCategory && getChildCategory!(item);
+              }}
+            >
+              {item.name}
+              {parents?.includes(item.id) && <span>{">"}</span>}
+            </li>
+        ) : (
+          <Link to={`/catalog?category=${item.id}`}>
+            <li
+              style={{ color: activeLi == item.id ? "#ff00d9" : "" }}
+              key={item.id}
+              onClick={() => {
+                onClickLi(item);
+                getChildCategory && getChildCategory!(item);
+              }}
+            >
+              {item.name}
+              {parents?.includes(item.id) && <span>{">"}</span>}
+            </li>
+          </Link>
+        )}
+      </>
     );
   };
 

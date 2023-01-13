@@ -1,6 +1,10 @@
 $maxWTable: 1000px;
 $maxWPhone: 600px;
 
+$size: 100%;
+$maxWTable: 1000px;
+$maxWPhone: 600px;
+
 .wrapper {
   margin: 40px 0;
   @media (max-width: $maxWPhone) {
@@ -28,10 +32,6 @@ $maxWPhone: 600px;
     gap: 10px;
   }
 }
-$size: 100%;
-$maxWTable: 1000px;
-$maxWPhone: 600px;
-
 .card {
   max-width: 300px;
   width: $size;
@@ -80,7 +80,6 @@ $maxWPhone: 600px;
     height: inherit;
     @media (max-width: $maxWTable) {
       flex-direction: row;
-      // justify-content: end;
     }
   }
   span {
@@ -96,4 +95,7 @@ $maxWPhone: 600px;
       font-size: .75rem;;
     }
   }
+}
+.skeletons{
+
 }

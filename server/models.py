@@ -47,6 +47,7 @@ class Category(Base, BaseNestedSets):
     id = Column(Integer, primary_key=True)
     name = Column(String(), nullable=False)
     visible = Column(Boolean)
+    url = Column(String(), nullable=True)
 
     product = relationship('Product', backref='category_product')
     topCategories = relationship(
@@ -65,9 +66,12 @@ class User(Base):
     username = Column(String(32), nullable=False)
     email = Column(String(32), nullable=False)
     password = Column(String(128), nullable=False)
+    isAdmin = Column(Boolean, default=False)
 
     reviews = relationship("Reviews", backref='user_reviews')
     favourite = relationship("Favourite", backref='user_favourite')
+    orders = relationship("Orders", backref='user_orders')
+    oldOrders = relationship("OldOrders", backref='user_oldOrders')
 
 
 class Reviews(Base):
@@ -134,3 +138,39 @@ class BannersBetweenImages(Base):
 
     bannersBetween_id = Column(
         Integer(), ForeignKey('bannersBetween.id'), nullable=False)
+
+
+class Orders(Base):
+    __tablename__ = "orders"
+
+    id = Column(Integer(), primary_key=True)
+    user_id = Column(Integer(), ForeignKey('user.id'), nullable=True)
+    street = Column(String(), nullable=False)
+    house = Column(String(), nullable=False)
+    flat = Column(String(), nullable=False)
+    phoneNumber = Column(String(), nullable=False)
+    totalPrice = Column(Integer(), nullable=False)
+
+
+class OrderProduct(Base):
+    __tablename__ = "orderProduct"
+
+    id = Column(Integer(), primary_key=True)
+    order_id = Column(Integer(), ForeignKey('orders.id'), nullable=False)
+    product_id = Column(Integer(), ForeignKey('product.id'), nullable=False)
+    count = Column(Integer(), nullable=False)
+
+
+class OldOrders(Base):
+    __tablename__ = "oldOrders"
+
+    id = Column(Integer(), primary_key=True)
+    user_id = Column(Integer(), ForeignKey('user.id'), nullable=False)
+    product_id = Column(Integer(), ForeignKey('product.id'), nullable=False)
+
+
+class Mailing(Base):
+    __tablename__ = "mailing"
+
+    id = Column(Integer(), primary_key=True)
+    email = Column(String(), nullable=False)

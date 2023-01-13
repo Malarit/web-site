@@ -1,15 +1,19 @@
 import React from "react";
 import cn from "classnames";
 
+import { useWindowDimensions } from "../../../utils/getWindowSize";
+
 import style from "./index.module.scss";
 
 const ImgSlider: React.FC<{ imgUrl: string[] }> = ({ imgUrl }) => {
+  const { width } = useWindowDimensions();
   const refOriginal = React.useRef<any>();
   const refThumbnail = React.useRef<any>();
   const slide = React.useRef<any>();
   const [slideValue, setSlideValue] = React.useState<number>(0);
   let [SValThumbnail, setSValThumbnail] = React.useState<number>(0);
   const [activeThumbnail, setActiveThumbnail] = React.useState<number>(0);
+  const [active, setActive] = React.useState(false);
 
   const onClickThumbnail = (index: number) => {
     setSlideValue(refOriginal.current?.offsetWidth * -index);
@@ -37,7 +41,7 @@ const ImgSlider: React.FC<{ imgUrl: string[] }> = ({ imgUrl }) => {
 
   return (
     <>
-      <div className={style.thumbnail}>
+      <div className={cn({ [style.thumbnail]: true, [style.active]: active })}>
         <span onClick={() => onClickSpan(true)}>Вверх</span>
         <span onClick={() => onClickSpan(false)}>Вниз</span>
         <div
@@ -58,6 +62,14 @@ const ImgSlider: React.FC<{ imgUrl: string[] }> = ({ imgUrl }) => {
         </div>
       </div>
       <div className={style.original}>
+        {width < 574 && (
+          <span
+            className={cn({ [style.active]: active })}
+            onClick={() => setActive(!active)}
+          >
+            {"-->"}
+          </span>
+        )}
         <div
           ref={slide}
           style={{

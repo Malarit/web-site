@@ -1,10 +1,11 @@
+import os
 from fastapi import Response
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from typing import Union, Any
 from jose import jwt
 from config import settings
-
+from db import SessionLocal
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -58,7 +59,6 @@ def decode_refresh_token(token: str):
     token_data = jwt.decode(
         token, settings.JWT_REFRESH_SECRET_KEY, settings.ALGORITHM
     )
-    print(token_data)
     return token_data
 
 
@@ -79,3 +79,12 @@ def set_cookie(response: Response, obj):
         samesite='none',
         secure=True,
         domain="127.0.0.1")
+
+
+def create_folder(workspace, folder):
+    path = os.path.join(workspace, folder)
+    if not os.path.exists(path):
+        os.makedirs(path)
+        print("create folder with path {0}".format(path))
+
+

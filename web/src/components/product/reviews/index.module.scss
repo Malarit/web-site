@@ -1,3 +1,6 @@
+$maxWTable: 1000px;
+$maxWPhone: 574px;
+
 .root {
   display: flex;
   height: 100%;
@@ -10,7 +13,18 @@
       flex-direction: column;
       overflow: auto;
       background-color: rgba(0, 0, 0, 0.055);
+      @media (max-width: $maxWPhone) {
+        flex-direction: column;
+        background-color: rgba(0, 0, 0, 0.055);
+        min-height: 400px;
+        max-height: 400px;
+        overflow-y: scroll;
+      }
     }
+  }
+  @media (max-width: $maxWPhone) {
+    flex-direction: column;
+    height: max-content;
   }
 }
 .sortStars {
@@ -37,5 +51,9 @@
         max-width: 200px;
       }
     }
+  }
+  @media (max-width: $maxWPhone) {
+    width: 100%;
+    max-width: 500px;
   }
 }

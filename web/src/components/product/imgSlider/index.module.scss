@@ -1,7 +1,15 @@
+$maxWTable: 1000px;
+$maxWPhone: 574px;
+
+.wrapper {
+  height: inherit;
+  overflow: hidden;
+}
 .thumbnail {
   margin-right: 5px;
   height: inherit;
   position: relative;
+  z-index: 5;
   overflow: hidden;
 
   & > div {
@@ -40,11 +48,34 @@
       bottom: 5px;
     }
   }
+  @media (max-width: $maxWPhone) {
+    position: absolute;
+    transform: translateX(-200px);
+    transition: all ease 0.5s;
+
+    &.active {
+      display: block;
+      transform: translateX(0px);
+    }
+  }
 }
 .original {
   width: 350px;
   overflow: hidden;
-
+  position: relative;
+  span {
+    position: absolute;
+    transform: translate(0);
+    color: #ff00d9;
+    font-size: 30px;
+    transition: all ease 0.5s;
+    top: 0px;
+    left: 0;
+    z-index: 50;
+    &.active {
+      transform: translate(116px);
+    }
+  }
   & > div {
     transition: all 0.5s ease;
     height: inherit;
@@ -54,4 +85,5 @@
     width: 350px;
     height: inherit;
   }
+
 }

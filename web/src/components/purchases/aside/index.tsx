@@ -1,13 +1,8 @@
 import React from "react";
 import Sticky from "react-stickynode";
 import cn from "classnames";
-import { useSelector } from "react-redux";
 
-import { card } from "../../../store/slices/product/types";
-import { selectCountCard } from "../../../store/slices/basket/selectors";
 import { basket } from "../../../store/slices/basket/types";
-
-import Button from "../button";
 
 import style from "./index.module.scss";
 
@@ -55,7 +50,6 @@ const Aside: React.FC<aside> = (props) => {
           <div>
             Итого: <span>{Math.round(totalPrice)},00 ₽</span>
           </div>
-          <Button />
         </div>
       </aside>
     </Sticky>

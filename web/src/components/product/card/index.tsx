@@ -25,9 +25,9 @@ const handleDragStart = (e: React.DragEvent<HTMLDivElement>) =>
 const Card: React.FC<{ card: card; classes?: classes }> = React.memo(
   ({ card, classes }) => {
     const { width } = useWindowDimensions();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const user = useSelector(selectUser);
-    const linkTitle = card.title.replace(/[\ \%\* ]/g, (item) => {
+    const linkTitle = card.title.replace(/ /g, (item) => {
       if (item === " ") return "-";
       else if (item === "%") return "";
       else return item;
@@ -35,7 +35,7 @@ const Card: React.FC<{ card: card; classes?: classes }> = React.memo(
 
     const setFavouriteProduct = () => {
       if (user) postFavourite(card.id, user?.id);
-      dispatch(setFavourite(card.id))
+      dispatch(setFavourite(card.id));
     };
 
     return (

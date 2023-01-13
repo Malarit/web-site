@@ -2,11 +2,14 @@ import React from "react";
 import cn from "classnames";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { debounce } from "lodash";
 
 import { useWindowDimensions } from "../../utils/getWindowSize";
 import { selectAllCard } from "../../store/slices/basket/selectors";
 import { selectUser } from "../../store/slices/user/selectors";
 import { fetchCategory } from "../../store/slices/category/slice";
+import { getProduct } from "../../utils/fetch";
+import { card } from "../../store/slices/product/types";
 
 import Search from "../search";
 import Drop from "./drop";
@@ -17,7 +20,6 @@ import style from "./header.module.scss";
 
 import heart from "../../assets/header/img/heart.svg";
 import basket from "../../assets/header/img/basket.svg";
-import search from "../../assets/header/img/search.svg";
 import whiteSearch from "../../assets/header/img/whiteSearch.svg";
 import authorization from "../../assets/header/img/account.svg";
 import UserInfo from "./userInfo";
@@ -28,11 +30,18 @@ const Header: React.FC = () => {
   const [activeAuthorization, setActiveAuthorization] =
     React.useState<boolean>(false);
   const refMenu = React.useRef<any>();
+  const refMenuDrop = React.useRef<any>();
   const refAuthorization = React.useRef<any>();
   const refImgAuthorization = React.useRef<any>();
   const CountCard = useSelector(selectAllCard);
   const user = useSelector(selectUser);
   const { width } = useWindowDimensions();
+
+  const [product, setProduct] = React.useState<{
+    item: card[];
+    pages: number;
+  }>();
+  const [inputValue, setinputValue] = React.useState("");
 
   const dispatch = useDispatch();
   const refFlag = React.useRef<boolean>(true);
@@ -46,7 +55,12 @@ const Header: React.FC = () => {
       const _e = e as MouseEvent & {
         path: Node[];
       };
-      if (refMenu.current && !_e.path.includes(refMenu.current))
+      if (
+        refMenu.current &&
+        !_e.path.includes(refMenu.current) &&
+        refMenuDrop.current &&
+        !_e.path.includes(refMenuDrop.current)
+      )
         setActiveMenu(false);
       if (
         refAuthorization.current &&
@@ -62,6 +76,13 @@ const Header: React.FC = () => {
       document.body.removeEventListener("click", handleClickBody);
     };
   }, []);
+
+  const _getProduct = React.useCallback(
+    debounce((event) => {
+      getProduct(setProduct, { text: event });
+    }, 200),
+    []
+  );
 
   return (
     <header className={style.root}>
@@ -80,7 +101,15 @@ const Header: React.FC = () => {
           {width > 1000 ? <span>Каталог</span> : ""}
         </div>
         <div className={style.search}>
-          <Search icon={whiteSearch} />
+          <Search
+            icon={whiteSearch}
+            getText={(e) => {
+              setinputValue(e);
+              _getProduct(e);
+            }}
+            dropValue={product?.item}
+            drop
+          />
         </div>
 
         <div className={style.icons}>
@@ -103,21 +132,22 @@ const Header: React.FC = () => {
               <span>{CountCard}</span>
             </Link>
           </div>
-          {width > 1000 ? (
-            <></>
-          ) : (
-            <div onClick={() => setActiveSearch(!activeSearch)}>
-              <img src={search} alt="" />
-            </div>
-          )}
         </div>
         {activeAuthorization && (
           <div className={style.user} ref={refAuthorization}>
-            {user ? <UserInfo user={user} /> : <Authorization />}
+            {user ? (
+              <UserInfo user={user} state={setActiveAuthorization} />
+            ) : (
+              <Authorization />
+            )}
           </div>
         )}
       </div>
-      <Drop active={activeMenu} setActiveMenu={setActiveMenu} />
+      <Drop
+        ref={refMenuDrop}
+        active={activeMenu}
+        setActiveMenu={setActiveMenu}
+      />
     </header>
   );
 };

@@ -98,11 +98,18 @@ async def get_me(
         query_favourite = db.query(models.Favourite.product_id).filter(
             models.Favourite.user_id == query_login['id']).all()
 
+        query_oldOrders = db.query(models.OldOrders.product_id).filter(
+            models.OldOrders.user_id == query_login['id']).all()
+
     except:
         raise HTTPException(status_code=403, detail={
             "details": "Could not validate credentials or Token expired"})
 
-    return {**query_login, "favourite_product": get_list_id(query_favourite, "product_id")}
+    return {
+        **query_login,
+        "favourite_product": get_list_id(query_favourite, "product_id"),
+        "oldOrders": get_list_id(query_oldOrders, "product_id")
+    }
 
 
 @router.post("/api/registration", tags=["user"])
@@ -343,14 +350,17 @@ async def get_product(
     right: int = Query(None, description="category nested sets"),
     tree_id: int = Query(None, description="main category"),
     discount: int = Query(
-        None, description="filter product.discount >= discount"),
+        None, description=" == 0 -- select discount == 0, == None -- select discount >= 0, == x -- select discount >= x "),
     limit: int = Query(None),
     page: int = Query(None),
     brand_id: str = Query(None),
     priceL: int = Query(None),
     priceR: int = Query(None),
-    favourite: list[int] = Query(None),
-    product_id: int = Query(None),
+    favourite: list[int] = Query(None, description="favourite products"),
+    product_id: int = Query(None,  description="select one product"),
+    product_id_list: list[int] = Query(
+        None,  description="select several product"),
+    text: str = Query(None, description="select by name product"),
     db: Session = Depends(get_db)
 ):
     def get_list_id(array):
@@ -380,6 +390,9 @@ async def get_product(
 
     if (product_id):
         productFilter.append(models.Product.id == product_id)
+    if (text):
+        look_for = '%{0}%'.format(text)
+        productFilter.append(models.Product.title.ilike(look_for))
     if (brand_id):
         productFilter.append(models.Product.brand_id == brand_id)
     if (priceL and priceR):
@@ -387,6 +400,8 @@ async def get_product(
         productFilter.append(models.Product.price <= (priceR or 0))
     if (favourite):
         productFilter.append(models.Product.id.in_(favourite))
+    if (product_id_list):
+        productFilter.append(models.Product.id.in_(product_id_list))
     if (discount != 0 and discount != None):
         productFilter.append(models.Product.discount >= discount)
     elif (discount == None):
@@ -459,8 +474,80 @@ async def set_favourite(data: schemas.favourite, db: Session = Depends(get_db)):
 
         db.commit()
 
-    except (ValueError):
+    except:
         raise HTTPException(status_code=403, detail={
             "details": "Couldn't add favourite"})
 
     return {"Ok", 200}
+
+
+@router.post("/api/order", tags=["user"])
+async def set_order(data: schemas.Order, db: Session = Depends(get_db)):
+
+    try:
+        dataCheck = False
+        for key in dict(data).keys():
+            if dict(data)[key] == "":
+                dataCheck = True
+
+        if dataCheck:
+            raise HTTPException(status_code=400, detail={
+                "details": "values should not be empty"})
+
+        product = data.product_id
+        del data.product_id
+
+        db.add(models.Orders(**jsonable_encoder(data)))
+        db.commit()
+
+        order_last_id = db.query(models.Orders.id).\
+            order_by(models.Orders.id.desc()).first().id
+
+        for p in product:
+            db.add(models.OrderProduct(
+                order_id=order_last_id, product_id=p.id, count=p.count))
+
+            if (data.user_id):
+                db.add(models.OldOrders(user_id=data.user_id, product_id=p.id))
+
+        db.commit()
+    except:
+        raise HTTPException(status_code=403, detail={
+            "details": "Failed to add order"})
+
+    return data
+
+
+@router.get("/api/topCategories", tags=["user"])
+async def get_topCategories(db: Session = Depends(get_db)):
+
+    query_banners = db.query(models.TopCategories).all()
+
+    return query_banners
+
+
+@router.get("/api/banners", tags=["user"])
+async def get_banners(db: Session = Depends(get_db)):
+
+    query_banners = db.query(models.Banners).all()
+
+    return query_banners
+
+
+@router.get("/api/bannersBetween", tags=["user"])
+async def get_banners(db: Session = Depends(get_db)):
+
+    query_bannersBetween = db.query(models.BannersBetween).all()
+    query_img = db.query(models.BannersBetweenImages).all()
+
+    bannersBetween = []
+
+    for qb in query_bannersBetween:
+        bannersBetween.append({**qb.__dict__, "url": []})
+
+    for b in bannersBetween:
+        for qi in query_img:
+            if (qi.__dict__["bannersBetween_id"] == b["id"]):
+                b["url"].append(qi.__dict__["url"])
+
+    return bannersBetween

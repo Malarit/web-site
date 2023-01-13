@@ -7,4 +7,5 @@ export interface categoryType {
   parent_id: number | null;
   tree_id: number;
   visible: boolean | null;
+  url: string;
 }

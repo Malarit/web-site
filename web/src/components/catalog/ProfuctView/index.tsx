@@ -37,7 +37,10 @@ const ProfuctView: React.FC<{ setPage: React.SetStateAction<any> }> = ({
           className={style.paginate}
           breakLabel="..."
           nextLabel=">"
-          onPageChange={(e) => setPage(e.selected)}
+          onPageChange={(e) => {
+            setPage(e.selected);
+            window.scrollTo(0, 0);
+          }}
           pageRangeDisplayed={width > 1000 ? 5 : 1}
           pageCount={pages}
           previousLabel="<"

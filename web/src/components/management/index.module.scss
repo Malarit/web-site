@@ -87,3 +87,13 @@
     width: 100%;
   }
 }
+.brand {
+  & > div {
+    display: flex;
+    &:nth-of-type(2) {
+      overflow-y: scroll;
+      height: 100%;
+      flex-direction: column;
+    }
+  }
+}

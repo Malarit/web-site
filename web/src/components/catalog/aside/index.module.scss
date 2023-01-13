@@ -28,6 +28,16 @@ $maxWPhone: 574px;
 }
 .tree {
   width: 100%;
+  cursor: pointer;
+  max-height: 200px;
+  overflow: auto;
+  padding: 10px 0;
+  div {
+    height: 25px;
+  }
+  & .active {
+    color: #ff00d9;
+  }
 }
 .slider {
   margin: 20px 0;

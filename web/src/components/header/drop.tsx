@@ -14,11 +14,14 @@ import { useWindowDimensions } from "../../utils/getWindowSize";
 
 import style from "./drop.module.scss";
 import appStyle from "../../app.module.scss";
+import Tree from "../category/tree";
 
-const Drop: React.FC<{
+type props = {
   active: boolean;
   setActiveMenu: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ active, setActiveMenu }) => {
+};
+
+const Drop = React.forwardRef<any, props>(({ active, setActiveMenu }, ref) => {
   const categoryFlat = useSelector(selectAllCategoryFlat);
   const category = useSelector(selectAllCategory);
   const [catalog, setCatalog] = React.useState<any>();
@@ -77,11 +80,14 @@ const Drop: React.FC<{
   const { width } = useWindowDimensions();
 
   return (
-    <div className={cn({ [style.root]: true, [style.active]: active })}>
+    <div
+      ref={ref}
+      className={cn({ [style.root]: true, [style.active]: active })}
+    >
       <div className={appStyle.container}>
         <div className={style.dropBlock}>
           {width < 1000 ? (
-            <>{getTreeCatalog()}</>
+            <>{<Tree category={category} />}</>
           ) : (
             <>
               <div>
@@ -121,6 +127,6 @@ const Drop: React.FC<{
       </div>
     </div>
   );
-};
+});
 
 export default Drop;
