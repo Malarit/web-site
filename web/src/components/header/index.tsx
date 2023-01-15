@@ -26,7 +26,6 @@ import UserInfo from "./userInfo";
 
 const Header: React.FC = () => {
   const [activeMenu, setActiveMenu] = React.useState<boolean>(false);
-  const [activeSearch, setActiveSearch] = React.useState<boolean>(false);
   const [activeAuthorization, setActiveAuthorization] =
     React.useState<boolean>(false);
   const refMenu = React.useRef<any>();
@@ -41,14 +40,13 @@ const Header: React.FC = () => {
     item: card[];
     pages: number;
   }>();
-  const [inputValue, setinputValue] = React.useState("");
 
   const dispatch = useDispatch();
   const refFlag = React.useRef<boolean>(true);
   React.useEffect(() => {
     if (refFlag.current) dispatch<any>(fetchCategory());
     refFlag.current = false;
-  }, []);
+  });
 
   React.useEffect(() => {
     const handleClickBody = (e: MouseEvent) => {
@@ -75,7 +73,7 @@ const Header: React.FC = () => {
     return () => {
       document.body.removeEventListener("click", handleClickBody);
     };
-  }, []);
+  });
 
   const _getProduct = React.useCallback(
     debounce((event) => {
@@ -88,7 +86,7 @@ const Header: React.FC = () => {
     <header className={style.root}>
       <div className={cn(style.wrapper, appStyle.container)}>
         <div className={style.logo}>
-          <Link to="/">oooood</Link>
+          <Link to="/">oSite</Link>
         </div>
         <div
           onClick={() => setActiveMenu(!activeMenu)}
@@ -104,7 +102,6 @@ const Header: React.FC = () => {
           <Search
             icon={whiteSearch}
             getText={(e) => {
-              setinputValue(e);
               _getProduct(e);
             }}
             dropValue={product?.item}
