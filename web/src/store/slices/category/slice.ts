@@ -7,7 +7,7 @@ export const fetchCategory = createAsyncThunk(
   "products/fetchCategoryStatus",
   async () => {
     return axios
-      .get("http://127.0.0.1:5000/api/category")
+      .get("/api/category")
       .then((response) => {
         return response.data;
       });

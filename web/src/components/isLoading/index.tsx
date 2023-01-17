@@ -56,7 +56,7 @@ const IsLoading: React.FC = () => {
     let oy = ch.current / 2.5;
 
     clear(ctx);
-    t.current += 0.1;
+    t.current += 0.001;
 
     for (let i = 0; i < particles.current.length; i += 1) {
       ctx.beginPath();

@@ -21,9 +21,13 @@ import { Authorization } from "./components/management/account/account";
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const [admin, setAdmin] = React.useState<any>();
+  const refFlag = React.useRef<boolean>(true);
   React.useEffect(() => {
-    getAdmin(setAdmin);
-    dispatch<any>(fetchUser());
+    if (refFlag.current) {
+      getAdmin(setAdmin);
+      dispatch<any>(fetchUser());
+    }
+    refFlag.current = false
   });
 
   return (

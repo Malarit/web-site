@@ -397,7 +397,7 @@ async def get_product(
         productFilter.append(models.Product.brand_id == brand_id)
     if (priceL and priceR):
         productFilter.append(models.Product.price >= (priceL or 0))
-        productFilter.append(models.Product.price <= (priceR or 0))
+        productFilter.append(models.Product.price <= (priceR or 10000))
     if (favourite):
         productFilter.append(models.Product.id.in_(favourite))
     if (product_id_list):
@@ -420,6 +420,8 @@ async def get_product(
         limit(limit).\
         offset(offest).\
         all()
+
+    print(query_product, priceL, priceR)
 
     query_imgUrl = db.query(models.ProductImages.id,
                             models.ProductImages.url,

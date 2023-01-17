@@ -1,6 +1,5 @@
-#server
-/venv
+/.env
+venv
 **/__pycache__
-/media/product/*
-/media/banners/*
-/media/category/*
+media/*
+

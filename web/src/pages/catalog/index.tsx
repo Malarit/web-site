@@ -17,7 +17,7 @@ import appStyle from "../../app.module.scss";
 
 const Catalog: React.FC = () => {
   const dispatch = useDispatch();
-  const category = useSelector(selectSubCategory);
+  const category = useSelector(selectAllCategory);
   const { width } = useWindowDimensions();
   const [activeFilter, setActiveFilter] = React.useState(false);
   const [allFilter, setAllFilter] = React.useState<{
@@ -32,7 +32,7 @@ const Catalog: React.FC = () => {
 
   React.useEffect(() => {
     window.scroll(0, 0);
-    const ca = category.find((obj) => obj.id == allFilter?.category);
+    const ca = category.flat().find((obj) => obj.id == allFilter?.category);
     dispatch<any>(
       fetchProducts({
         page: page,
@@ -58,7 +58,9 @@ const Catalog: React.FC = () => {
           <Aside
             state={setActiveFilter}
             getFilters={setAllFilter}
-            category={category}
+            category={category
+              .flat()
+              .filter((obj) => obj.left + 1 == obj.right)}
           />
         </div>
         <ProfuctView setPage={setPage} />

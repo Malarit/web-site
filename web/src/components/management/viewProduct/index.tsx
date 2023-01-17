@@ -103,7 +103,7 @@ const ViewProduct: React.FC<{
       <div className={style.img}>
         {item?.imgUrl.map((obj) => (
           <div key={obj.id}>
-            <img src={`http://127.0.0.1:5000` + obj.url} alt="" />
+            <img src={obj.url} alt="" />
             <span onClick={() => deleteImg(obj)}>Удалить</span>
           </div>
         ))}

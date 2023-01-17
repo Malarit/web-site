@@ -6,12 +6,37 @@ export const fetchProducts = createAsyncThunk<
   { item: card[]; pages: number },
   ifetchProducts
 >("products/fetchProductsStatus", async (props) => {
+  const {
+    left,
+    right,
+    tree_id,
+    discount,
+    limit,
+    page,
+    price,
+    brand_id,
+    favourite,
+    product_id,
+    text,
+    product_id_list,
+  } = props;
+
   return axios
-    .get(`http://127.0.0.1:5000/api/product`, {
+    .get(`/api/product`, {
       params: {
-        ...props,
-        priceL: props.price?.left,
-        priceR: props.price?.right,
+        left,
+        right,
+        tree_id,
+        discount,
+        limit,
+        page,
+        priceL: price?.left,
+        priceR: price?.right,
+        brand_id,
+        favourite,
+        product_id,
+        text,
+        product_id_list,
       },
       paramsSerializer: {
         indexes: null,

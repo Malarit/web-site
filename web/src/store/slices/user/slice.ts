@@ -6,7 +6,7 @@ export const fetchUser = createAsyncThunk<user>(
   "user/fetchUserStatus",
   async () => {
     return axios
-      .get(`http://127.0.0.1:5000/api/me`, {
+      .get(`/api/me`, {
         withCredentials: true,
       })
       .then((response) => {

@@ -115,10 +115,10 @@ const Banners: React.FC<{
                   <td>
                     {Array.isArray(obj.url) ? (
                       obj.url.map((url) => (
-                        <img src={"http://127.0.0.1:5000" + url} alt="" />
+                        <img src={url} alt="" />
                       ))
                     ) : (
-                      <img src={"http://127.0.0.1:5000" + obj.url} alt="" />
+                      <img src={obj.url} alt="" />
                     )}
                   </td>
                   <td>

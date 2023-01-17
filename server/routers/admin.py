@@ -103,7 +103,7 @@ async def post_admin(
         value=admin_token,
         samesite='none',
         secure=True,
-        domain="127.0.0.1",
+        domain="localhost",
     )
 
     return {"Ok", 200}
@@ -146,7 +146,7 @@ async def logout_admin(response: Response, admin_token: str | None = Cookie(defa
         key="admin_token",
         samesite='none',
         secure=True,
-        domain="127.0.0.1"
+        domain="localhost"
     )
 
     return {"Ok", 200}
@@ -226,7 +226,7 @@ async def delete_category(id: int, db: Session = Depends(get_db), admin: int = D
 
         try:
             url = query_category.__dict__["url"][4:]
-            os.remove(os.getcwd() + f"{url}".replace('/', '\\'))
+            os.remove(os.getcwd() + f"{url}")
         except:
             pass
 
@@ -297,7 +297,7 @@ async def delete_product(id: int, db: Session = Depends(get_db), admin: int = De
         delete()
 
     for qp in query_productImgId:
-        os.remove(os.getcwd() + f"{qp.url[4:]}".replace('/', '\\'))
+        os.remove(os.getcwd() + f"{qp.url[4:]}")
 
     db.delete(query_product)
     for c in query_productImgId:
@@ -396,7 +396,7 @@ async def delete_TopCategories(id: int, db: Session = Depends(get_db), admin: in
         models.TopCategories.id == id).one()
 
     url = query_topCategories.__dict__["url"][4:]
-    os.remove(os.getcwd() + f"{url}".replace('/', '\\'))
+    os.remove(os.getcwd() + f"{url}")
 
     db.delete(query_topCategories)
     db.commit()
@@ -446,7 +446,7 @@ async def delete_banners(id: int, db: Session = Depends(get_db), admin: int = De
         models.Banners.id == id).one()
 
     url = query_banners.__dict__["url"][4:]
-    os.remove(os.getcwd() + f"{url}".replace('/', '\\'))
+    os.remove(os.getcwd() + f"{url}")
 
     db.delete(query_banners)
     db.commit()
@@ -508,7 +508,7 @@ async def delete_banners(id: int, db: Session = Depends(get_db), admin: int = De
 
     for qp in query_img:
         url = qp.__dict__["url"][4:]
-        os.remove(os.getcwd() + f"{url}".replace('/', '\\'))
+        os.remove(os.getcwd() + f"{url}")
         db.delete(qp)
 
     db.delete(query_bannersBetween)

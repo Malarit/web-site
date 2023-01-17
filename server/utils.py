@@ -71,14 +71,14 @@ def set_cookie(response: Response, obj):
         value=access_token,
         samesite='none',
         secure=True,
-        domain="127.0.0.1")
+        domain="localhost")
 
     response.set_cookie(
         key="refresh_token",
         value=refresh_token,
         samesite='none',
         secure=True,
-        domain="127.0.0.1")
+        domain="localhost")
 
 
 def create_folder(workspace, folder):

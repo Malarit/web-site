@@ -18,8 +18,8 @@ const Banner: React.FC<{
     if (!Array.isArray(url)) return "";
 
     return width > 1000
-      ? "http://127.0.0.1:5000" + (url[0] || "")
-      : "http://127.0.0.1:5000" + (url[1] || "");
+      ? (url[0] || "")
+      : (url[1] || "");
   };
 
   return (

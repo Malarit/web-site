@@ -58,7 +58,7 @@ const Card: React.FC<{ card: card; classes?: classes }> = React.memo(
 
         <div>
           <Link to={`/catalog/details/${card.id}/${linkTitle}`}>
-            <img src={"http://127.0.0.1:5000" + card.imgUrl[0].url} alt="" />
+            <img src={card.imgUrl[0].url} alt="" />
           </Link>
         </div>
 

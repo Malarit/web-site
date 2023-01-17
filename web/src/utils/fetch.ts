@@ -6,7 +6,7 @@ export const getProduct = async (
   props: ifetchProducts
 ) => {
   try {
-    const response = await axios.get("http://127.0.0.1:5000/api/product", {
+    const response = await axios.get("/api/product", {
       params: {
         ...props,
       },
@@ -25,7 +25,7 @@ export const postRegistration = async (data: {
 }) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:5000/api/registration",
+      "/api/registration",
       {
         ...data,
       }
@@ -38,7 +38,7 @@ export const postRegistration = async (data: {
 
 export const getBrands = async (state: React.SetStateAction<any>) => {
   try {
-    const response = await axios.get("http://127.0.0.1:5000/api/brand");
+    const response = await axios.get("/api/brand");
     state(response.data);
   } catch (error) {
     return error;
@@ -49,7 +49,7 @@ export const postBrands = async (name: string) => {
   axios.defaults.withCredentials = true;
   try {
     const response = await axios.post(
-      "http://127.0.0.1:5000/api/admin/brand?title=" + name
+      "/api/admin/brand?title=" + name
     );
     return response;
   } catch (error) {
@@ -63,7 +63,7 @@ export const getReviews = async (
   user_id?: number
 ) => {
   try {
-    const response = await axios.get("http://127.0.0.1:5000/api/reviews", {
+    const response = await axios.get("/api/reviews", {
       params: { id, user_id },
     });
     state(response.data);
@@ -78,7 +78,7 @@ export const getReview = async (
   user_id: number
 ) => {
   try {
-    const response = await axios.get("http://127.0.0.1:5000/api/review", {
+    const response = await axios.get("/api/review", {
       params: { product_id, user_id },
     });
     state(response.data);
@@ -89,7 +89,7 @@ export const getReview = async (
 
 export const deleteReview = async (product_id: number, user_id: number) => {
   try {
-    const response = await axios.delete("http://127.0.0.1:5000/api/review", {
+    const response = await axios.delete("/api/review", {
       params: { product_id, user_id },
     });
     return response;
@@ -105,7 +105,7 @@ export const postReviews = async (
   value: number
 ) => {
   try {
-    const response = await axios.post("http://127.0.0.1:5000/api/reviews", {
+    const response = await axios.post("/api/reviews", {
       text,
       product_id,
       user_id,
@@ -123,7 +123,7 @@ export const postAssessment = async (
   user_id: number
 ) => {
   try {
-    const response = await axios.post("http://127.0.0.1:5000/api/assessment", {
+    const response = await axios.post("/api/assessment", {
       likeIt,
       reviews_id,
       user_id,
@@ -141,7 +141,7 @@ export const postAuthorization = async (data: {
   axios.defaults.withCredentials = true;
   try {
     const response = await axios.post(
-      "http://127.0.0.1:5000/api/authorization",
+      "/api/authorization",
       data
     );
     return response;
@@ -153,7 +153,7 @@ export const postAuthorization = async (data: {
 export const logout = async () => {
   axios.defaults.withCredentials = true;
   try {
-    const response = await axios.get("http://127.0.0.1:5000/api/logout");
+    const response = await axios.get("/api/logout");
     return response;
   } catch (error) {
     return error;
@@ -163,7 +163,7 @@ export const logout = async () => {
 export const postFavourite = async (product_id: number, user_id: number) => {
   axios.defaults.withCredentials = true;
   try {
-    const response = await axios.post("http://127.0.0.1:5000/api/favourite", {
+    const response = await axios.post("/api/favourite", {
       product_id,
       user_id,
     });
@@ -175,7 +175,7 @@ export const postFavourite = async (product_id: number, user_id: number) => {
 
 export const postCategory = (parent_id: number | null, name: string) => {
   axios.defaults.withCredentials = true;
-  axios.post("http://127.0.0.1:5000/api/admin/category", {
+  axios.post("/api/admin/category", {
     name: name,
     parent_id,
   });
@@ -183,7 +183,7 @@ export const postCategory = (parent_id: number | null, name: string) => {
 
 export const deleteCategory = (id: number) => {
   axios.defaults.withCredentials = true;
-  axios.delete("http://127.0.0.1:5000/api/admin/category", {
+  axios.delete("/api/admin/category", {
     params: {
       id,
     },
@@ -192,14 +192,14 @@ export const deleteCategory = (id: number) => {
 
 export const postProduct = (formData: any) => {
   axios.defaults.withCredentials = true;
-  axios.post("http://127.0.0.1:5000/api/admin/product", formData, {
+  axios.post("/api/admin/product", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
 
 export const deleteProduct = (id: number) => {
   axios.defaults.withCredentials = true;
-  axios.delete("http://127.0.0.1:5000/api/admin/product", {
+  axios.delete("/api/admin/product", {
     params: {
       id,
     },
@@ -208,14 +208,14 @@ export const deleteProduct = (id: number) => {
 
 export const putProduct = (formData: any) => {
   axios.defaults.withCredentials = true;
-  axios.put("http://127.0.0.1:5000/api/admin/product", formData, {
+  axios.put("/api/admin/product", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
 
 export const deleteProductImg = (id: number) => {
   axios.defaults.withCredentials = true;
-  axios.delete("http://127.0.0.1:5000/api/admin/product/image", {
+  axios.delete("/api/admin/product/image", {
     params: {
       id,
     },
@@ -224,14 +224,14 @@ export const deleteProductImg = (id: number) => {
 
 export const postBanners = (formData: any) => {
   axios.defaults.withCredentials = true;
-  axios.post("http://127.0.0.1:5000/api/admin/banners", formData, {
+  axios.post("/api/admin/banners", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
 
 export const getBanners = async (state: React.SetStateAction<any>) => {
   try {
-    const response = await axios.get("http://127.0.0.1:5000/api/banners");
+    const response = await axios.get("/api/banners");
     state(response.data);
   } catch (error) {
     return error;
@@ -242,7 +242,7 @@ export const deleteBanners = async (id: number) => {
   axios.defaults.withCredentials = true;
   try {
     const response = await axios.delete(
-      "http://127.0.0.1:5000/api/admin/banners",
+      "/api/admin/banners",
       {
         params: {
           id,
@@ -257,14 +257,14 @@ export const deleteBanners = async (id: number) => {
 
 export const postTopCategories = (formData: any) => {
   axios.defaults.withCredentials = true;
-  axios.post("http://127.0.0.1:5000/api/admin/topCategories", formData, {
+  axios.post("/api/admin/topCategories", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
 
 export const getTopCategories = async (state: React.SetStateAction<any>) => {
   try {
-    const response = await axios.get("http://127.0.0.1:5000/api/topCategories");
+    const response = await axios.get("/api/topCategories");
     state(response.data);
   } catch (error) {
     return error;
@@ -275,7 +275,7 @@ export const deleteTopCategories = async (id: number) => {
   axios.defaults.withCredentials = true;
   try {
     const response = await axios.delete(
-      "http://127.0.0.1:5000/api/admin/topCategories",
+      "/api/admin/topCategories",
       {
         params: {
           id,
@@ -290,7 +290,7 @@ export const deleteTopCategories = async (id: number) => {
 
 export const postBannersBetween = (formData: any) => {
   axios.defaults.withCredentials = true;
-  axios.post("http://127.0.0.1:5000/api/admin/bannersBetween", formData, {
+  axios.post("/api/admin/bannersBetween", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
@@ -298,7 +298,7 @@ export const postBannersBetween = (formData: any) => {
 export const getBannersBetween = async (state: React.SetStateAction<any>) => {
   try {
     const response = await axios.get(
-      "http://127.0.0.1:5000/api/bannersBetween"
+      "/api/bannersBetween"
     );
     state(response.data);
   } catch (error) {
@@ -310,7 +310,7 @@ export const deleteBannersBetween = async (id: number) => {
   axios.defaults.withCredentials = true;
   try {
     const response = await axios.delete(
-      "http://127.0.0.1:5000/api/admin/bannersBetween",
+      "/api/admin/bannersBetween",
       {
         params: {
           id,
@@ -325,7 +325,7 @@ export const deleteBannersBetween = async (id: number) => {
 
 export const putCategory = (formData: any) => {
   axios.defaults.withCredentials = true;
-  axios.put("http://127.0.0.1:5000/api/admin/category", formData, {
+  axios.put("/api/admin/category", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
@@ -340,7 +340,7 @@ export const postOrder = async (data: {
   totalPrice: number;
 }) => {
   try {
-    const response = await axios.post("http://127.0.0.1:5000/api/order", data);
+    const response = await axios.post("/api/order", data);
     return response;
   } catch (error) {
     return error;
@@ -350,7 +350,7 @@ export const postOrder = async (data: {
 export const postAdmin = async (data: { email: string; password: string }) => {
   axios.defaults.withCredentials = true;
   try {
-    const response = await axios.post("http://127.0.0.1:5000/api/admin", data);
+    const response = await axios.post("/api/admin", data);
     return response;
   } catch (error) {
     return error;
@@ -360,7 +360,7 @@ export const postAdmin = async (data: { email: string; password: string }) => {
 export const getAdmin = async (state: React.SetStateAction<any>) => {
   axios.defaults.withCredentials = true;
   try {
-    const response = await axios.get("http://127.0.0.1:5000/api/admin");
+    const response = await axios.get("/api/admin");
     state(response);
     return response;
   } catch (error) {
@@ -377,7 +377,7 @@ export const postAdminRegistration = async (data: {
   axios.defaults.withCredentials = true;
   try {
     const response = await axios.post(
-      "http://127.0.0.1:5000/api/admin/registration",
+      "/api/admin/registration",
       data
     );
     return response;
@@ -389,7 +389,7 @@ export const postAdminRegistration = async (data: {
 export const adminLogout = async () => {
   axios.defaults.withCredentials = true;
   try {
-    const response = await axios.get("http://127.0.0.1:5000/api/admin/logout");
+    const response = await axios.get("/api/admin/logout");
     return response;
   } catch (error) {
     return error;

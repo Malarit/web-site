@@ -37,7 +37,7 @@ const Slider: React.FC<{
           <img
             key={id}
             className={style.img}
-            src={"http://127.0.0.1:5000" + item.url}
+            src={item.url}
             onDragStart={handleDragStart}
             role="presentation"
             alt=""

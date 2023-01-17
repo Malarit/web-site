@@ -21,7 +21,7 @@ const Category: React.FC<{ title: string; card: subCategory }> = React.memo(
                 <span>
                   {category.find((obj) => obj.id === item.category_id)?.name}
                 </span>
-                <img src={"http://127.0.0.1:5000" + item.url} alt="" />
+                <img src={item.url} alt="" />
               </Link>
             </div>
           ))}

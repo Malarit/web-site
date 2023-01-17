@@ -1,7 +1,6 @@
 import React from "react";
 import qs from "qs";
 import cn from "classnames";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { getBrands } from "../../../utils/fetch";
@@ -60,6 +59,7 @@ const Aside: React.FC<{
       brand: brandId,
       price: price,
     };
+    console.log(data)
     const queryString = qs.stringify({ ...data });
     navigate("?" + queryString);
     getFilters(data);
