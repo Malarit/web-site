@@ -4,6 +4,6 @@
 
 ### `docker-compose up`
 
-add data to http://localhost/admin .\
-admin@gmail.com .\
-admin .\
+add data to http://localhost/admin \
+admin@gmail.com \
+admin \
