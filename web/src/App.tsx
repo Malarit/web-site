@@ -24,7 +24,7 @@ const App: React.FC = () => {
   React.useEffect(() => {
     getAdmin(setAdmin);
     dispatch<any>(fetchUser());
-  });
+  }, []);
 
   return (
     <div className={style.wrapper}>

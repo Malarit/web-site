@@ -46,7 +46,7 @@ const Header: React.FC = () => {
   React.useEffect(() => {
     if (refFlag.current) dispatch<any>(fetchCategory());
     refFlag.current = false;
-  });
+  }, []);
 
   React.useEffect(() => {
     const handleClickBody = (e: MouseEvent) => {
