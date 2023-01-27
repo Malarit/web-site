@@ -18,5 +18,6 @@ You need to install postgres and change the parameters ./server/.env in to your
 ### `npm start`
 
 
+# 
 This version is intended for development, works via cors.\
 Сhange the port for the interface to server/main.py if you have launched on another.\
