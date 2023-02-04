@@ -160,6 +160,13 @@ async def post_brand(title: str, db: Session = Depends(get_db), admin: int = Dep
     return title
 
 
+@router.delete("/api/admin/brand", tags=["admin"])
+async def post_brand(id: int, db: Session = Depends(get_db), admin: int = Depends(root)):
+    db.query(models.Brand).filter(models.Brand.id == id).delete()
+    db.commit()
+
+    return {"ok": 200}
+
 @router.post("/api/admin/category", tags=["admin"])
 async def post_category(item: schemas.category, db: Session = Depends(get_db), admin: int = Depends(root)):
 

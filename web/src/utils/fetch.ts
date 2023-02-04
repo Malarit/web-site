@@ -57,6 +57,23 @@ export const postBrands = async (name: string) => {
   }
 };
 
+export const deleteBrand = async (id: number) => {
+  axios.defaults.withCredentials = true;
+  try {
+    const response = await axios.delete(
+      "http://127.0.0.1:5000/api/admin/brand",
+      {
+        params: {
+          id,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const getReviews = async (
   state: React.SetStateAction<any>,
   id: number,

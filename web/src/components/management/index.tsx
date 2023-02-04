@@ -16,6 +16,7 @@ import {
   getBrands,
   postBrands,
   adminLogout,
+  deleteBrand,
 } from "../../utils/fetch";
 
 import {
@@ -68,7 +69,7 @@ const Management: React.FC = () => {
     <div className={style.root}>
       <button onClick={() => adminLogout()}>Выйти</button>
       <button onClick={() => setActive(-1)}>
-        Зарегестрировать нового администратора  
+        Зарегестрировать нового администратора
       </button>
       <button onClick={() => setActive(0)}>Продукты</button>
       <button onClick={() => setActive(1)}>Карусель баннеров</button>
@@ -151,7 +152,15 @@ const Management: React.FC = () => {
           <div>
             {brands.map((item) => (
               <div>
-                {item.name} <button>Удалить</button>{" "}
+                {item.name}{" "}
+                <input
+                  type="button"
+                  value="Удалить"
+                  onClick={() => {
+                    deleteBrand(item.id);
+                    setBrands(brands.filter((obj) => obj.id != item.id));
+                  }}
+                />
               </div>
             ))}
           </div>
