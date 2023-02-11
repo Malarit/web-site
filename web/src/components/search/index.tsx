@@ -19,14 +19,11 @@ const Search: React.FC<{
 
   React.useEffect(() => {
     const handleClickBody = (e: MouseEvent) => {
-      const _e = e as MouseEvent & {
-        path: Node[];
-      };
       if (
         refInput.current &&
-        !_e.path.includes(refInput.current) &&
+        !e.composedPath().includes(refInput.current) &&
         refDrop.current &&
-        !_e.path.includes(refDrop.current)
+        !e.composedPath().includes(refDrop.current)
       )
         setActive(false);
     };

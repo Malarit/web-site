@@ -60,7 +60,7 @@ const Product: React.FC<{ item: card }> = ({ item }) => {
           </div>
           <div className={style.rating}>
             <Rating
-              initialValue={item.rating?.value || 0}
+              initialValue={(item.rating.value / item.rating.count) | 0}
               readonly
               size={width > 754 ? 20 : 15}
             />

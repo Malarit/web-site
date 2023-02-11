@@ -88,11 +88,15 @@ $maxWPhone: 574px;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+
+  @media (max-width: $maxWPhone) {
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .buttonL {
   left: 2px;
-
 }
 .buttonR {
   right: 2px;
