@@ -12,7 +12,15 @@ const Tree: React.FC<{
   activeLi?: number;
   getActiveUl?: React.SetStateAction<any>;
   _setActiveUl?: number[];
-}> = ({ category, getChildCategory, activeLi, getActiveUl, _setActiveUl }) => {
+  state?: React.SetStateAction<any>;
+}> = ({
+  category,
+  getChildCategory,
+  activeLi,
+  getActiveUl,
+  _setActiveUl,
+  state,
+}) => {
   const [activeUl, setActiveUl] = React.useState<any[]>([]);
   const parents: number[] = [];
 
@@ -35,17 +43,17 @@ const Tree: React.FC<{
     return (
       <>
         {parents?.includes(item.id) ? (
-            <li
-              style={{ color: activeLi == item.id ? "#ff00d9" : "" }}
-              key={item.id}
-              onClick={() => {
-                onClickLi(item);
-                getChildCategory && getChildCategory!(item);
-              }}
-            >
-              {item.name}
-              {parents?.includes(item.id) && <span>{">"}</span>}
-            </li>
+          <li
+            style={{ color: activeLi == item.id ? "#ff00d9" : "" }}
+            key={item.id}
+            onClick={() => {
+              onClickLi(item);
+              getChildCategory && getChildCategory!(item);
+            }}
+          >
+            {item.name}
+            {parents?.includes(item.id) && <span>{">"}</span>}
+          </li>
         ) : (
           <Link to={`/catalog?category=${item.id}`}>
             <li
@@ -54,6 +62,7 @@ const Tree: React.FC<{
               onClick={() => {
                 onClickLi(item);
                 getChildCategory && getChildCategory!(item);
+                state && state(false);
               }}
             >
               {item.name}
