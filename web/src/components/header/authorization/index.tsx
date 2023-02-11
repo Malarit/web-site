@@ -105,11 +105,6 @@ const Authorization: React.FC = () => {
   };
 
   const formValidation = (e: HTMLInputElement) => {
-    const check: check = (flag, key, add) => {
-      if (flag) setValidation({ ...validation, [key]: false, ...add });
-      else setValidation({ ...validation, [key]: true, ...add });
-    };
-
     switch (e.name) {
       case "login":
         const firstNumber = e.value[0]?.search(/\d/) == -1;
