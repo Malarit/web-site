@@ -87,7 +87,9 @@ const Drop = React.forwardRef<any, props>(({ active, setActiveMenu }, ref) => {
       <div className={appStyle.container}>
         <div className={style.dropBlock}>
           {width < 1000 ? (
-            <>{<Tree category={category} />}</>
+            <>
+              {<Tree category={category} state={() => setActiveMenu(false)} />}
+            </>
           ) : (
             <>
               <div>

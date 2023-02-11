@@ -3,9 +3,9 @@ import cn from "classnames";
 
 import style from "./index.module.scss";
 /**
-  * @param check changes the backlight
-  * @param reset param for useEffect, clears the value
-*/
+ * @param check changes the backlight
+ * @param reset param for useEffect, clears the value
+ */
 
 const Input: React.FC<{
   lable: string;

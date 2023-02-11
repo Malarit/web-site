@@ -50,21 +50,18 @@ const Header: React.FC = () => {
 
   React.useEffect(() => {
     const handleClickBody = (e: MouseEvent) => {
-      const _e = e as MouseEvent & {
-        path: Node[];
-      };
       if (
         refMenu.current &&
-        !_e.path.includes(refMenu.current) &&
+        !e.composedPath().includes(refMenu.current) &&
         refMenuDrop.current &&
-        !_e.path.includes(refMenuDrop.current)
+        !e.composedPath().includes(refMenuDrop.current)
       )
         setActiveMenu(false);
       if (
         refAuthorization.current &&
-        !_e.path.includes(refAuthorization.current) &&
+        !e.composedPath().includes(refAuthorization.current) &&
         refImgAuthorization.current &&
-        !_e.path.includes(refImgAuthorization.current)
+        !e.composedPath().includes(refImgAuthorization.current)
       )
         setActiveAuthorization(false);
     };

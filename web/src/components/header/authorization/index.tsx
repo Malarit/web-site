@@ -40,7 +40,6 @@ const Authorization: React.FC = () => {
     React.useState<validation>(initialValidation);
   const dispatch = useDispatch();
 
-
   function checkObj(obj: { [key: string]: any }, check_val: any) {
     return Object.values(obj).includes(check_val);
   }
@@ -118,13 +117,18 @@ const Authorization: React.FC = () => {
         const characters = /^[a-zA-Z0-9]+$/.test(e.value);
 
         setCheckServer({ ...checkServer, login: false });
-        check(firstNumber && lengthLogin && characters, e.name);
+        setValidation({
+          ...validation,
+          [e.name]: !(firstNumber && lengthLogin && characters),
+        });
 
         break;
       case "email":
         setCheckServer({ ...checkServer, email: false });
-        check(validateEmail(e.value) != null, e.name);
-
+        setValidation({
+          ...validation,
+          [e.name]: !(validateEmail(e.value) != null),
+        });
         break;
       case "firstPassword":
         const number = e.value.search(/\d/) != -1;
@@ -139,13 +143,17 @@ const Authorization: React.FC = () => {
           firstValue: e.value,
         });
 
-        check(number && length && symbols, e.name, {
+        setValidation({
+          ...validation,
+          [e.name]: !(number && length && symbols),
           secondPassword: e.value !== password.secondValue,
         });
-
         break;
       case "secondPassword":
-        check(e.value === password.firstValue, e.name);
+        setValidation({
+          ...validation,
+          [e.name]: !(e.value === password.firstValue),
+        });
         setPassword({ ...password, secondValue: e.value });
 
         break;
