@@ -1,10 +1,9 @@
 # Server
-
 You need to install postgres and change the parameters ./server/.env in to your
 
 ### `psql -U "user"`
 ### `CREATE DATABASE app`
-\
+#
 ### `cd server`
 ### `mkdir media`
 ### `pip install -r requirements.txt`
